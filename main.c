@@ -24,8 +24,8 @@ char target[] = "BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 root=UUID=who-ever-cares-a
 char needle[] = "debug";
 
 char *passstat[] = {"fails", "pass"};
-char *clobstat[] = {"", "clobbes input"};
-char *freestat[] = {"", "has memory leaks"};
+char *clobstat[] = {"", "clobber input"};
+char *freestat[] = {"", "potential memory leaks"};
 
 char *cutout(char *, char *);		// bestie
 char *delsubstr(char *, char *);	// Eddy_Em
@@ -128,7 +128,7 @@ main()
 		p->time = (end.tv_sec - begin.tv_sec) * 1000.0;
 		p->time += (end.tv_usec - begin.tv_usec) / 1000.0;
 		
-		printf("%16s%7s%16s%20s%10.2f ms\n",
+		printf("%16s%7s%16s%26s%10.2f ms\n",
 				p->name,
 				passstat[p->pass],
 				clobstat[p->clob],
