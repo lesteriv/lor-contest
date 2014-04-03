@@ -26,6 +26,7 @@ int rounds = 1000000;
 int passes = 5;
 
 char *cutout(char *, char *);		// bestie
+char *whiteout(char *, char *);		// bestie
 char *delsubstr(char *, char *);	// Eddy_Em
 char *_remove(char *, char *);		// Eddy_Em
 char *process_wrapper(char *, char *);	// Gvidon
@@ -47,7 +48,8 @@ struct part {
 	int needsfree;
 	char *output;
 } *p, part[] = {
-	{ .name = "beastie",		.f = &cutout },
+	{ .name = "beastie #1",		.f = &cutout },
+	{ .name = "beastie #2",		.f = &whiteout },
 	{ .name = "Eddy_Em",		.f = &delsubstr },
 //	{ .name = "Eddy_Em",		.f = &_remove },	// never returns
 	{ .name = "Gvidon",		.f = &process_wrapper },

@@ -31,3 +31,16 @@ cutout(char *hay, char *needle)
 
 	return hay;
 }
+
+char *
+whiteout(char *hay, char *needle)
+{
+	char *s = hay;
+	size_t i, len = strlen(needle);
+
+	while ((s = strstr(s, needle)) != NULL)
+		for (i = 0; i < len; i++)	/* faster then memset */
+			*s++ = ' ';
+
+	return hay;
+}
