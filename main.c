@@ -107,6 +107,7 @@ prepare(struct part *p)
 
 	strip(o);
 	p->pass = !strcmp(o, target);
+	p->time = 0;
 
 	free(s);
 }
@@ -115,7 +116,7 @@ int
 main()
 {
 	struct timeval begin, end;
-	int i, rounds = 1000000;
+	int k, i, rounds = 1000000, passes = 5;
 
 	strip(target);
 
@@ -123,13 +124,16 @@ main()
 
 		prepare(p);
 
-		gettimeofday(&begin, NULL);
-		for (i = 0; i < rounds; i++)
-			go(p, string);
-		gettimeofday(&end, NULL);
-		p->time = (end.tv_sec - begin.tv_sec) * 1000.0;
-		p->time += (end.tv_usec - begin.tv_usec) / 1000.0;
-		
+		for (k = 0; k < passes; k++) {
+			gettimeofday(&begin, NULL);
+			for (i = 0; i < rounds; i++)
+				go(p, string);
+			gettimeofday(&end, NULL);
+			p->time += (end.tv_sec - begin.tv_sec) * 1000.0;
+			p->time += (end.tv_usec - begin.tv_usec) / 1000.0;
+		}
+		p->time /= passes;
+
 		printf("%16s%7s%16s%26s%10.2f ms\n",
 				p->name,
 				passstat[p->pass],
