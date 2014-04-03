@@ -22,10 +22,8 @@
 char string[] = "BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 debug root=UUID=who-ever-cares-about-uid ro debug";
 char target[] = "BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 root=UUID=who-ever-cares-about-uid ro";
 char needle[] = "debug";
-
-char *passstat[] = {"fails", "pass"};
-char *clobstat[] = {"", "clobber input"};
-char *freestat[] = {"", "potential memory leaks"};
+int rounds = 1000000;
+int passes = 5;
 
 char *cutout(char *, char *);		// bestie
 char *delsubstr(char *, char *);	// Eddy_Em
@@ -63,6 +61,11 @@ struct part {
 	{ NULL },
 };
 
+char *passstat[] = {"fails", "pass"};
+char *clobstat[] = {"", "clobber input"};
+char *freestat[] = {"", "potential memory leaks"};
+
+/* strip whitespaces */
 void
 strip(char *s)
 {
@@ -84,11 +87,17 @@ go(struct part *p, char *s)
 {
 	char *o;
 	
+	/* prepare a copy of test string for clobber functions */
 	if (p->clob)
 		s = strdup(s);
+
+	/* fire! */
 	o = p->f(s, needle);
+
 	if (p->clob)
 		free(s);
+
+	/* free internal allocated space */
 	if (p->needsfree)
 		free(o);
 }
@@ -101,14 +110,18 @@ prepare(struct part *p)
 	s = strdup(string);
 	o = p->f(s, needle);
 
+	/* returns another pointer as passed, requiers free */
 	p->needsfree = o != s;
 
+	/* check input clobber */
 	p->clob = !!strcmp(s, string);
 
+	/* remove whitespaces from output for compare */
 	strip(o);
 	p->pass = !strcmp(o, target);
 	p->time = 0;
 
+	/* free internal allocated space */
 	if (p->needsfree)
 		free(o);
 
@@ -119,12 +132,14 @@ int
 main()
 {
 	struct timeval begin, end;
-	int k, i, rounds = 1000000, passes = 5;
+	int k, i;
 
+	/* remove whitespaces from target string */
 	strip(target);
 
 	for (p = part; p->name != NULL; p++) {
 
+		/* initialize */
 		prepare(p);
 
 		for (k = 0; k < passes; k++) {
@@ -135,6 +150,7 @@ main()
 			p->time += (end.tv_sec - begin.tv_sec) * 1000.0;
 			p->time += (end.tv_usec - begin.tv_usec) / 1000.0;
 		}
+		/* average time */
 		p->time /= passes;
 
 		printf("%16s%7s%16s%26s%10.2f ms\n",
