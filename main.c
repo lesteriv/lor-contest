@@ -51,8 +51,7 @@ struct part {
 //	{ .name = "Eddy_Em",		.f = &_remove },	// never returns
 	{ .name = "Gvidon",		.f = &process_wrapper },
 	{ .name = "KennyMinigun",	.f = &strdel_wrapper },
-	{ .name = "nokachi #1"	,	.f = &remove_string },
-	{ .name = "nokachi #2",		.f = &remove_string_2 },
+	{ .name = "nokachi",		.f = &remove_string },
 	{ .name = "qulinxao",		.f = &wordstrips },
 	{ .name = "true_admin #1",	.f = &cut },
 	{ .name = "true_admin #2",	.f = &cut2 },
