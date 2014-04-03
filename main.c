@@ -141,7 +141,10 @@ main()
 	for (p = part; p->name != NULL; p++) {
 		/* initialize */
 		prepare(p);
+	}
 
+	for (p = part; p->name != NULL; p++) {
+		p->time = 0.0;
 		for (k = 0; k < passes; k++) {
 			gettimeofday(&begin, NULL);
 			for (i = 0; i < rounds; i++)
