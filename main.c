@@ -45,6 +45,7 @@ struct part {
 	int clob;
 	double time;
 	int needsfree;
+	char *output;
 } *p, part[] = {
 	{ .name = "beastie",		.f = &cutout },
 	{ .name = "Eddy_Em",		.f = &delsubstr },
@@ -65,19 +66,21 @@ char *clobstat[] = {"", "clobber input"};
 char *freestat[] = {"", "potential memory leaks"};
 
 /* strip whitespaces */
-void
+char *
 strip(char *s)
 {
-	char *p = s; 
+	char *r, *p;
 
+	r = p = s; 
 	while (*s && *p) {
 		if (*p == ' ')
 			p++;
 		else
 			*s++ = *p++;
 	}
-
 	*s = '\0';
+
+	return r;
 }
 
 
@@ -104,10 +107,12 @@ go(struct part *p, char *s)
 void
 prepare(struct part *p)
 {
-	char *s, *o;
+	char *s, *t, *o;
 
 	s = strdup(string);
+	t = strdup(target);
 	o = p->f(s, needle);
+	p->output = strdup(o);
 
 	/* returns another pointer as passed, requiers free */
 	p->needsfree = o != s;
@@ -116,15 +121,15 @@ prepare(struct part *p)
 	p->clob = !!strcmp(s, string);
 
 	/* remove whitespaces from output for compare */
-	strip(o);
-	p->pass = !strcmp(o, target);
-	p->time = 0;
+	p->pass = !strcmp(strip(o), strip(t));
+	p->time = 0.0;
 
 	/* free internal allocated space */
 	if (p->needsfree)
 		free(o);
 
 	free(s);
+	free(t);
 }
 
 int
@@ -133,11 +138,7 @@ main()
 	struct timeval begin, end;
 	int k, i;
 
-	/* remove whitespaces from target string */
-	strip(target);
-
 	for (p = part; p->name != NULL; p++) {
-
 		/* initialize */
 		prepare(p);
 
@@ -152,12 +153,19 @@ main()
 		/* average time */
 		p->time /= passes;
 
+		/* results */
 		printf("%16s%7s%16s%26s%10.2f ms\n",
 				p->name,
 				passstat[p->pass],
 				clobstat[p->clob],
 				freestat[p->needsfree],
 				p->time);
+
+		printf("%16s '%s'\n", "input", string);
+		printf("%16s '%s'\n", "output", p->output);
+		printf("%16s '%s'\n\n", "expected", target);
+
+		free(p->output);
 	}
 
 	return 0;
