@@ -15,8 +15,7 @@ Average time of 5 passes each:
          Eddy_Em   pass                    potential memory leaks    143.57 ms
           Gvidon   pass   clobber input                              730.35 ms
     KennyMinigun   pass   clobber input                              118.88 ms
-      nokachi #1  fails                    potential memory leaks    117.61 ms
-      nokachi #2   pass                    potential memory leaks    140.57 ms
+         nokachi   pass                    potential memory leaks    140.57 ms
         qulinxao   pass   clobber input                              158.64 ms
    true_admin #1   pass                    potential memory leaks    126.96 ms
    true_admin #2   pass                    potential memory leaks    885.50 ms
