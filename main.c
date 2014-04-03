@@ -38,6 +38,7 @@ char *cut(char *, char *);		// true_admin
 char *cut2(char *, char *);		// true_admin
 char *strremove_wrapper(char *, char *);// wota
 char *remove_word_wrapper(char *, char *);// wota
+char *strcut_wrapper(char *, char *);	// anonymous
 
 struct part {
 	char *name;
@@ -60,6 +61,7 @@ struct part {
 	{ .name = "true_admin #2",	.f = &cut2 },
 	{ .name = "wota #1",		.f = &strremove_wrapper },
 	{ .name = "wota #2",		.f = &remove_word_wrapper },
+	{ .name = "anonymous",		.f = &strcut_wrapper },
 	{ NULL },
 };
 
