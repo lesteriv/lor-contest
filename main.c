@@ -109,6 +109,9 @@ prepare(struct part *p)
 	p->pass = !strcmp(o, target);
 	p->time = 0;
 
+	if (p->needsfree)
+		free(o);
+
 	free(s);
 }
 
