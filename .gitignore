@@ -1,3 +1,6 @@
+contest
+*.swp
+
 # Object files
 *.o
 *.ko
