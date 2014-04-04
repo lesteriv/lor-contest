@@ -177,7 +177,7 @@ result(struct part *p)
 	double minval = 100000.0;
 
 	for (z = p; z->name != NULL; z++)
-		if (z->pass && z->grostime < minval)
+		if (z->grostime < minval)
 			minval = z->grostime;
 
 	printf("\nGros Relults\n----\n\n");
