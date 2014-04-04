@@ -10,7 +10,7 @@ void strcut(char *where, const char *what)
 {
     size_t whatlen = strlen(what);
     char *p, *prevp = NULL, *end = where + strlen(where);
-    for (p = where, where = prevp; p = strstr(p, what); where += p - prevp, p += whatlen, prevp = p)
+    for (p = where, where = prevp; (p = strstr(p, what)); where += p - prevp, p += whatlen, prevp = p)
         if (prevp)
             memmove(where, prevp, p - prevp);
     if (prevp)

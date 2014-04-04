@@ -4,6 +4,7 @@
  * https://www.linux.org.ru/forum/development/10349962?cid=10350284
  */
 
+#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -13,7 +14,7 @@ void strremove( char* s, const char* t )
     char *d = s;
 	
     do while( !strncmp( s, t, l ) ) s += l;
-    while( *d++ = *s++ );
+    while(( *d++ = *s++ ));
 }
 
 char *
@@ -29,7 +30,7 @@ void remove_word( char* s, const char* w )
     int l = strlen( w );
     char* p = s;
 	
-    while( p = strstr( p, w ) )
+    while(( p = strstr( p, w ) ))
     {
         if( ( p == s || isspace( p[ -1 ] ) ) && ( !p[ l ] || isspace( p[ l ] ) ) )
             memset( p, ' ', l );

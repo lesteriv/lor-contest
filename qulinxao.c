@@ -9,7 +9,12 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-inline char*nxt(char* s){while(isalpha(*++s));return s;}
+inline char*
+nxt(char* s){
+	while(isalpha(*++s))
+		;
+	return s;
+}
 
 //fill space in memory
 char*
