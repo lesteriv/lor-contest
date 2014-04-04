@@ -11,53 +11,42 @@ Results
 Average time of 5 passes each:
 
 <pre>
-         beastie   pass   clobber input                              113.39 ms
-           input 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 debug root=UUID=who-ever-cares-about-uid ro debug'
-          output 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 root=UUID=who-ever-cares-about-uid ro '
-        expected 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 root=UUID=who-ever-cares-about-uid ro'
+DATA
 
-         Eddy_Em   pass                    potential memory leaks    148.67 ms
-           input 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 debug root=UUID=who-ever-cares-about-uid ro debug'
-          output 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64  root=UUID=who-ever-cares-about-uid ro '
-        expected 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 root=UUID=who-ever-cares-about-uid ro'
+input  >debug debugfs debug debug=1 systemd.debug debug<
+expect >debugfs debug=1 systemd.debug<
 
-          Gvidon   pass   clobber input                             1205.80 ms
-           input 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 debug root=UUID=who-ever-cares-about-uid ro debug'
-          output 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64  root=UUID=who-ever-cares-about-uid ro '
-        expected 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 root=UUID=who-ever-cares-about-uid ro'
+EXECUTING
 
-    KennyMinigun   pass   clobber input                              135.87 ms
-           input 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 debug root=UUID=who-ever-cares-about-uid ro debug'
-          output 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 root=UUID=who-ever-cares-about-uid ro '
-        expected 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 root=UUID=who-ever-cares-about-uid ro'
+beastie cutout       clobber           - fails   >systemd.<
+beastie whiteout     clobber           - fails   >           fs            =1 systemd.           <
+beastie undebug      clobber           - passes  >debugfs debug=1 systemd.debug <
+beastie split        clobber           - passes  >debugfs debug=1 systemd.debug<
+Eddy_Em                    -  needs free fails   > fs  =1 systemd. <
+Gvidon               clobber           - fails   > fs  =1 systemd. <
+KennyMinigun         clobber           - fails   >s 1 systemd.<
+nokachi                    -  needs free passes  > debugfs  debug=1 systemd.debug <
+qulinxao             clobber           - fails   >      debugfs            =1 systemd.           <
+true_admin #1              -  needs free fails   > fs  =1 systemd. <
+true_admin #2              -  needs free fails   > fs  =1 systemd. <
+wota #1              clobber           - fails   > fs  =1 systemd. <
+wota #2              clobber           - passes  >      debugfs       debug=1 systemd.debug      <
+anonymous            clobber           - fails   > fs  =1 systemd. <
 
-         nokachi   pass                    potential memory leaks    141.27 ms
-           input 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 debug root=UUID=who-ever-cares-about-uid ro debug'
-          output 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64  root=UUID=who-ever-cares-about-uid ro '
-        expected 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 root=UUID=who-ever-cares-about-uid ro'
+TIMING
 
-        qulinxao   pass   clobber input                              183.02 ms
-           input 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 debug root=UUID=who-ever-cares-about-uid ro debug'
-          output 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64       root=UUID=who-ever-cares-about-uid ro      '
-        expected 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 root=UUID=who-ever-cares-about-uid ro'
-
-   true_admin #1   pass                    potential memory leaks    121.01 ms
-           input 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 debug root=UUID=who-ever-cares-about-uid ro debug'
-          output 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64  root=UUID=who-ever-cares-about-uid ro '
-        expected 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 root=UUID=who-ever-cares-about-uid ro'
-
-   true_admin #2   pass                    potential memory leaks    944.89 ms
-           input 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 debug root=UUID=who-ever-cares-about-uid ro debug'
-          output 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64  root=UUID=who-ever-cares-about-uid ro '
-        expected 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 root=UUID=who-ever-cares-about-uid ro'
-
-         wota #1   pass   clobber input                             1002.16 ms
-           input 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 debug root=UUID=who-ever-cares-about-uid ro debug'
-          output 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64  root=UUID=who-ever-cares-about-uid ro '
-        expected 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 root=UUID=who-ever-cares-about-uid ro'
-
-         wota #2   pass   clobber input                               90.48 ms
-           input 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 debug root=UUID=who-ever-cares-about-uid ro debug'
-          output 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64       root=UUID=who-ever-cares-about-uid ro      '
-        expected 'BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 root=UUID=who-ever-cares-about-uid ro'
+beastie cutout      230.68 ms  fails     110.5 % slower than best
+beastie whiteout     96.62 ms  fails     -11.8 % slower than best
+beastie undebug     116.77 ms passes       6.6 % slower than best
+beastie split       236.49 ms passes     115.8 % slower than best
+Eddy_Em             249.73 ms  fails     127.9 % slower than best
+Gvidon              291.68 ms  fails     166.2 % slower than best
+KennyMinigun        111.75 ms  fails       2.0 % slower than best
+nokachi             113.84 ms passes       3.9 % slower than best
+qulinxao            154.87 ms  fails      41.4 % slower than best
+true_admin #1        79.79 ms  fails     -27.2 % slower than best
+true_admin #2       198.71 ms  fails      81.4 % slower than best
+wota #1             322.62 ms  fails     194.5 % slower than best
+wota #2             109.56 ms passes       0.0 % slower than best
+anonymous           147.95 ms  fails      35.0 % slower than best
 </pre>

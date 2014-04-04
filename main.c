@@ -19,14 +19,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-char string[] = "BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 debug root=UUID=who-ever-cares-about-uid ro debug";
-char target[] = "BOOT_IMAGE=/boot/vmlinuz-3.2.0-amd64 root=UUID=who-ever-cares-about-uid ro";
+/* rules: https://www.linux.org.ru/forum/development/10349962?cid=10352344 */
+
+char string[] = "debug debugfs debug debug=1 systemd.debug debug";
+char target[] = "debugfs debug=1 systemd.debug";
 char needle[] = "debug";
 int rounds = 1000000;
 int passes = 5;
 
 char *cutout(char *, char *);		// bestie
 char *whiteout(char *, char *);		// bestie
+char *undebug(char *, char *);		// bestie
+char *split(char *, char *);		// bestie
 char *delsubstr(char *, char *);	// Eddy_Em
 char *_remove(char *, char *);		// Eddy_Em
 char *process_wrapper(char *, char *);	// Gvidon
@@ -49,8 +53,10 @@ struct part {
 	int needsfree;
 	char *output;
 } *p, part[] = {
-	{ .name = "beastie #1",		.f = &cutout },
-	{ .name = "beastie #2",		.f = &whiteout },
+	{ .name = "beastie cutout",	.f = &cutout },
+	{ .name = "beastie whiteout",	.f = &whiteout },
+	{ .name = "beastie undebug",	.f = &undebug },
+	{ .name = "beastie split",	.f = &split },
 	{ .name = "Eddy_Em",		.f = &delsubstr },
 //	{ .name = "Eddy_Em",		.f = &_remove },	// never returns
 	{ .name = "Gvidon",		.f = &process_wrapper },
@@ -65,9 +71,9 @@ struct part {
 	{ NULL },
 };
 
-char *passstat[] = {"fails", "pass"};
-char *clobstat[] = {"", "clobber input"};
-char *freestat[] = {"", "potential memory leaks"};
+char *passstat[] = {"fails", "passes"};
+char *clobstat[] = {"-", "clobber"};
+char *freestat[] = {"-", "needs free"};
 
 /* strip whitespaces */
 char *
@@ -141,13 +147,22 @@ main()
 {
 	struct timeval begin, end;
 	int k, i;
+	double minimal = 1000000.0;
 
 	for (p = part; p->name != NULL; p++) {
 		/* initialize */
 		prepare(p);
 	}
 
+	printf("\nDATA\n\n");
+	printf("input  >%s<\n", string);
+	printf("expect >%s<\n", target);
+
+	printf("\nEXECUTING\n\n");
 	for (p = part; p->name != NULL; p++) {
+		printf("%-16s%12s%12s", p->name, clobstat[p->clob], freestat[p->needsfree]);
+		printf(" %-8s>%s<\n", passstat[p->pass], p->output);
+
 		p->time = 0.0;
 		for (k = 0; k < passes; k++) {
 			gettimeofday(&begin, NULL);
@@ -159,18 +174,18 @@ main()
 		}
 		/* average time */
 		p->time /= passes;
+		if (p->pass && p->time < minimal)
+			minimal = p->time;
+	}
 
+	printf("\nTIMING\n\n");
+	for (p = part; p->name != NULL; p++) {
 		/* results */
-		printf("%16s%7s%16s%26s%10.2f ms\n",
-				p->name,
+		printf("%-16s%10.2f ms%7s%10.1f %% slower than best\n",
+				p->name, p->time,
 				passstat[p->pass],
-				clobstat[p->clob],
-				freestat[p->needsfree],
-				p->time);
+				100.0 * (p->time - minimal) / minimal);
 
-		printf("%16s '%s'\n", "input", string);
-		printf("%16s '%s'\n", "output", p->output);
-		printf("%16s '%s'\n\n", "expected", target);
 
 		free(p->output);
 	}

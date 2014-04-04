@@ -15,6 +15,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 char *
@@ -41,6 +42,56 @@ whiteout(char *hay, char *needle)
 	while ((s = strstr(s, needle)) != NULL)
 		for (i = 0; i < len; i++)	/* faster then memset */
 			*s++ = ' ';
+
+	return hay;
+}
+
+/*
+ * "debug" => ""
+ * "debugfs" => "debugfs"
+ * "debug=1" => "debug=1"
+ * "debug systemd.debug" => " systemd.debug" 
+ * "debug 123 debug 456" => " 123 456"
+ */
+
+char *
+undebug(char *hay, char *needle)
+{
+	char *n, *s = hay;
+	size_t len = strlen(needle);
+	char *end = strchr(hay, '\0');
+
+	while ((s = strstr(s, needle)) != NULL) {
+		n = s + len;
+		if((*n == '\0' || *n++ == ' ') && (s == hay || *(s - 1) == ' '))
+			memmove(s, n, end - n + 1);
+		else
+			s = n;
+	}
+
+	return hay;
+}
+
+char *
+split(char *hay, char *needle)
+{
+	char *p, *s = strdup(hay);
+	size_t len = strlen(hay);
+	int first = 1;
+
+	while ((p = strsep(&s, " ")) != NULL) {
+		if (strcmp(p, needle) != 0) {
+			if (first) {
+				first = 0;
+				strncpy(hay, p, len);
+			} else {
+				strncat(hay, " ", len);
+				strncat(hay, p, len);
+			}
+		}
+	}
+
+	free(s);
 
 	return hay;
 }
