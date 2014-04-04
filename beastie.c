@@ -22,26 +22,22 @@ char *
 cutout(char *hay, char *needle)
 {
 	char *p, *s = hay;
+	int match;
 
-	while ((s = strstr(s, needle)) != NULL) {
-		if ((p = strchr(s, ' ')) != NULL)
-			memmove(s, p + 1, strlen(p));
+	while ((p = strchr(s, ' ')) != NULL) {
+		*p = '\0';
+		match = strcmp(s, needle);
+		*p = ' ';
+
+		if (match)
+			s = p + 1;
 		else
-			*s = '\0';
+			memmove(s, p + 1, strlen(p));
 	}
 
-	return hay;
-}
-
-char *
-whiteout(char *hay, char *needle)
-{
-	char *s = hay;
-	size_t i, len = strlen(needle);
-
-	while ((s = strstr(s, needle)) != NULL)
-		for (i = 0; i < len; i++)	/* faster then memset */
-			*s++ = ' ';
+	do {
+		*s-- = '\0';
+	} while (*s == ' ');
 
 	return hay;
 }

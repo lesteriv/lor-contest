@@ -28,7 +28,6 @@ int rounds = 100000;
 int passes = 100;
 
 char *cutout(char *, char *);		// bestie
-char *whiteout(char *, char *);		// bestie
 char *undebug(char *, char *);		// bestie
 char *split(char *, char *);		// bestie
 char *delsubstr(char *, char *);	// Eddy_Em
@@ -54,7 +53,6 @@ struct part {
 	char *output;
 } *p, part[] = {
 	{ .name = "beastie cutout",	.f = &cutout },
-	{ .name = "beastie whiteout",	.f = &whiteout },
 	{ .name = "beastie undebug",	.f = &undebug },
 	{ .name = "beastie split",	.f = &split },
 	{ .name = "Eddy_Em",		.f = &delsubstr },
@@ -155,8 +153,8 @@ main()
 	}
 
 	printf("\nDATA\n\n");
-	printf("input  >%s<\n", string);
-	printf("expect >%s<\n", target);
+	printf("input  \"%s\"\n", string);
+	printf("expect \"%s\"\n", target);
 
 	printf("\nEXECUTING\n\n");
 	for (p = part; p->name != NULL; p++) {
