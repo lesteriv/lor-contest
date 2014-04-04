@@ -8,23 +8,26 @@ https://www.linux.org.ru/forum/development/10349962
 Gros Relults
 ----
 
-sorted by success and time
+name            | func name       | passed  | gros time   | slower      
+---             | ---             | ---     | ---         | ---         
+anonymous       | nop             |       4 |    21.60 ms |      0.00 % 
+beastie         | cutout          |       7 |    47.44 ms |    119.65 % 
+beastie         | undebug         |       7 |    41.16 ms |     90.55 % 
+beastie         | split           |       6 |    75.38 ms |    248.99 % 
+Eddy_Em         | delsubstr       |       3 |    91.82 ms |    325.14 % 
+Gvidon          | process         |       3 |    92.67 ms |    329.04 % 
+KennyMinigun    | strdel          |       3 |    40.17 ms |     86.01 % 
+nokachi         | remove          |       6 |    60.27 ms |    179.03 % 
+qulinxao        | wordstrings     |       4 |    48.11 ms |    122.74 % 
+true_admin      | cut             |       3 |    55.79 ms |    158.31 % 
+true_admin      | cut2            |       3 |    85.94 ms |    297.92 % 
+wota            | strremove       |       3 |    84.62 ms |    291.77 % 
+wota            | remove_word     |       7 |    46.21 ms |    113.95 % 
+anonymous       | strcut          |       3 |    46.77 ms |    116.56 % 
+puzan           | str_drop_str    |       7 |    41.21 ms |     90.80 % 
+qnikst          | undebugq        |       5 |    37.90 ms |     75.46 % 
+mix-mix         | strcut          |       7 |    48.18 ms |    123.09 % 
 
-name            | func name       | passed      | gros time   | slower
----             | ---             | ---         | ---         | ---
-wota            | remove_word     |       6 |   75.64 ms |      0.00 %
-beastie         | undebug         |       6 |   76.34 ms |      0.92 %
-beastie         | cutout          |       6 |   78.26 ms |      3.46 %
-nokachi         | remove          |       6 |  157.40 ms |    108.09 %
-beastie         | split           |       5 |  182.92 ms |    141.83 %
-qulinxao        | wordstrings     |       3 |   69.81 ms |     -7.70 %
-wota            | strremove       |       2 |   70.27 ms |     -7.10 %
-Gvidon          | process         |       2 |   74.87 ms |     -1.02 %
-KennyMinigun    | strdel          |       2 |   63.98 ms |    -15.41 %
-anonymous       | strcut          |       2 |   81.30 ms |      7.48 %
-true_admin      | cut             |       2 |  164.18 ms |    117.05 %
-true_admin      | cut2            |       2 |  230.41 ms |    204.62 %
-Eddy_Em         | delsubstr       |       2 |  258.54 ms |    241.80 %
 
 Test Cases
 ----------
