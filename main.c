@@ -18,6 +18,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#if MTRACE
+#include <mcheck.h>
+#endif
 
 /* rules: https://www.linux.org.ru/forum/development/10349962?cid=10352344 */
 
@@ -160,6 +163,9 @@ runtest(struct part *p, struct test *t)
 	int i, k;
 
  	prepare(p, t);
+#if MTRACE
+	return;
+#endif
 
 	fprintf(stderr, "%16s ", p->fname);
 	p->time = 0.0;
@@ -205,6 +211,9 @@ main(int argc, char **argv)
 	struct part *p;
 	struct test *t;
 
+#if MTRACE
+	mtrace();
+#endif
 	for (t = testcases; t->string; t++) {
 		fprintf(stderr, "\n%16s \"%s\"\n", "input", t->string);
 		for (p = part; p->name; p++)
@@ -212,6 +221,9 @@ main(int argc, char **argv)
 	}
 
 	result(part);
+#if MTRACE
+	muntrace();
+#endif
 
 	return 0;
 }
