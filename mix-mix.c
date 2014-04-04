@@ -1,3 +1,7 @@
+/*
+ * https://www.linux.org.ru/forum/development/10349962?cid=10354589
+ */
+
 #include <stdlib.h>
 #include <string.h>
 
