@@ -39,7 +39,7 @@ struct test {
 	{ NULL }
 };
 
-int rounds = 100000;
+int rounds = 500000;
 int passes = 20;
 
 char *nop(char *, char *);
