@@ -98,7 +98,7 @@ struct part {
 };
 
 /* strip whitespaces */
-char *
+static char *
 strip(char *p)
 {
 	char *d, *s;
@@ -116,7 +116,7 @@ strip(char *p)
 }
 
 
-void
+static void
 go(struct part *p, char *s, char *n)
 {
 	char *o;
@@ -133,7 +133,7 @@ go(struct part *p, char *s, char *n)
 	free(s);
 }
 
-void
+static void
 prepare(struct part *p, struct test *test)
 {
 	char *s, *t, *o;
@@ -152,7 +152,7 @@ prepare(struct part *p, struct test *test)
 	free(t);
 }
 
-void
+static void
 runtest(struct part *p, struct test *t)
 {
 	char *stat[] = {"fail", "pass"};
@@ -178,7 +178,7 @@ runtest(struct part *p, struct test *t)
 	fprintf(stderr, "%5s%9.2f ms\n", stat[p->pass], p->time);
 }
 
-void
+static void
 result(struct part *p)
 {
 	struct part *z;
