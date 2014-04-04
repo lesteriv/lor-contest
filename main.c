@@ -60,6 +60,7 @@ char *strcut_wrapper(char *, char *);
 char *str_drop_str(char *, char *);
 char *undebugq(char *, char *);
 char *strcutm(char *, char *);
+char *carb_wrapper(char *, char *);
 
 struct part {
 	char *name;
@@ -87,6 +88,7 @@ struct part {
 	{ .name = "puzan", .fname = "str_drop_str", .f = &str_drop_str },
 	{ .name = "qnikst", .fname = "undebugq", .f = &undebugq },
 	{ .name = "mix-mix", .fname = "strcut", .f = &strcutm },
+	{ .name = "Carb", .fname = "debugdel", .f = &carb_wrapper },
 	{ NULL },
 };
 
