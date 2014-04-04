@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "part.h"
 
 /* rules: https://www.linux.org.ru/forum/development/10349962?cid=10352344 */
 
@@ -52,72 +53,29 @@ struct part {
 	int needsfree;
 	char *output;
 }   *p, part[] = {
-	{
-		.name = "beastie cutout",
-		.f = &cutout
-	},
-	{
-		.name = "beastie undebug",
-		.f = &undebug
-	},
-	{
-		.name = "beastie split",
-		.f = &split
-	},
-	{
-		.name = "Eddy_Em",
-		.f = &delsubstr
-	},
+	{ .name = "beastie cutout", .f = &cutout },
+	{ .name = "beastie undebug", .f = &undebug },
+	{ .name = "beastie split", .f = &split },
+	{ .name = "Eddy_Em", .f = &delsubstr },
 #if 0				/* never returns */
-	{
-		.name = "Eddy_Em",
-		.f = &_remove
-	},
+	{ .name = "Eddy_Em", .f = &_remove },
 #endif
-	{
-		.name = "Gvidon",
-		.f = &process_wrapper
-	},
-	{
-		.name = "KennyMinigun",
-		.f = &strdel_wrapper
-	},
-	{
-		.name = "nokachi",
-		.f = &remove_string
-	},
-	{
-		.name = "qulinxao",
-		.f = &wordstrips
-	},
-	{
-		.name = "true_admin #1",
-		.f = &cut
-	},
-	{
-		.name = "true_admin #2",
-		.f = &cut2
-	},
-	{
-		.name = "wota #1",
-		.f = &strremove_wrapper
-	},
-	{
-		.name = "wota #2",
-		.f = &remove_word_wrapper
-	},
-	{
-		.name = "anonymous",
-		.f = &strcut_wrapper
-	},
-	{
-		NULL
-	},
+	{ .name = "Gvidon", .f = &process_wrapper },
+	{ .name = "KennyMinigun", .f = &strdel_wrapper },
+	{ .name = "nokachi", .f = &remove_string },
+	{ .name = "qulinxao", .f = &wordstrips },
+	{ .name = "true_admin #1", .f = &cut },
+	{ .name = "true_admin #2", .f = &cut2 },
+	{ .name = "wota #1", .f = &strremove_wrapper },
+	{ .name = "wota #2", .f = &remove_word_wrapper },
+	{ .name = "anonymous", .f = &strcut_wrapper },
+	{ NULL },
 };
 
 char *passstat[] = {"fails", "passes"};
 char *clobstat[] = {"-", "clobber"};
 char *freestat[] = {"-", "needs free"};
+
 /* strip whitespaces */
 char *
 strip(char *s)
