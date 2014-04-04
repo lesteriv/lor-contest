@@ -12,7 +12,8 @@
 inline char *
 nxt(char *s)
 {
-	while (isalpha(*++s));
+	while (*++s > ' ')
+		;
 	return s;
 }
 //fill space in memory
