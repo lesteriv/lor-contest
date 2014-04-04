@@ -7,28 +7,33 @@
 #include <string.h>
 #include <assert.h>
 
-char * strdel(const char *needle, char *haystack) {
-    const size_t n_length = strlen(needle);
-    const size_t h_length = strlen(haystack);
-    size_t i, j;
+char *
+strdel(const char *needle, char *haystack)
+{
+	const size_t n_length = strlen(needle);
+	const size_t h_length = strlen(haystack);
+	size_t i, j;
 
-    assert(needle);
-    assert(haystack);
+	assert(needle);
+	assert(haystack);
 
-    if (n_length == 0)
-        return haystack;
+	if (n_length == 0)
+		return haystack;
 
-    for (i = 0, j = 0; i < h_length; i++) {
-        if (haystack[i] == needle[0] && strncmp(&haystack[i], needle, n_length) == 0) {
-            i += n_length;              // shift iterator position forward
-        } else {
-            haystack[j] = haystack[i];  // copy symbol to non-shifted position (backwards)
-            j++;
-        }
-    }
-    haystack[j] = '\0';                 // FINISH HIM!
+	for (i = 0, j = 0; i < h_length; i++) {
+		if (haystack[i] == needle[0] && strncmp(&haystack[i], needle, n_length) == 0) {
+			i += n_length;
+			//shift iterator position forward
+		} else {
+			haystack[j] = haystack[i];
+			//copy symbol to non - shifted position(backwards)
+			    j++;
+		}
+	}
+	haystack[j] = '\0';
+	//FINISH HIM !
 
-    return haystack;
+	    return haystack;
 }
 
 char *

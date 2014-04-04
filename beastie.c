@@ -41,12 +41,11 @@ cutout(char *hay, char *needle)
 
 	return hay;
 }
-
 /*
  * "debug" => ""
  * "debugfs" => "debugfs"
  * "debug=1" => "debug=1"
- * "debug systemd.debug" => " systemd.debug" 
+ * "debug systemd.debug" => " systemd.debug"
  * "debug 123 debug 456" => " 123 456"
  */
 
@@ -59,7 +58,7 @@ undebug(char *hay, char *needle)
 
 	while ((s = strstr(s, needle)) != NULL) {
 		n = s + len;
-		if((*n == '\0' || *n++ == ' ') && (s == hay || *(s - 1) == ' '))
+		if ((*n == '\0' || *n++ == ' ') && (s == hay || *(s - 1) == ' '))
 			memmove(s, n, end - n + 1);
 		else
 			s = n;

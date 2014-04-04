@@ -27,59 +27,104 @@ char needle[] = "debug";
 int rounds = 100000;
 int passes = 100;
 
-char *cutout(char *, char *);		// bestie
-char *undebug(char *, char *);		// bestie
-char *split(char *, char *);		// bestie
-char *delsubstr(char *, char *);	// Eddy_Em
-char *_remove(char *, char *);		// Eddy_Em
-char *process_wrapper(char *, char *);	// Gvidon
-char *strdel_wrapper(char *, char *);	// KennyMinigun
-char *remove_string(char *, char *);	// nokachi
-char *remove_string_2(char *, char *);	// nokachi
-char *wordstrips(char *, char *);	// qulinxao
-char *cut(char *, char *);		// true_admin
-char *cut2(char *, char *);		// true_admin
-char *strremove_wrapper(char *, char *);// wota
-char *remove_word_wrapper(char *, char *);// wota
-char *strcut_wrapper(char *, char *);	// anonymous
+char *cutout(char *, char *);
+char *undebug(char *, char *);
+char *split(char *, char *);
+char *delsubstr(char *, char *);
+char *_remove(char *, char *);
+char *process_wrapper(char *, char *);
+char *strdel_wrapper(char *, char *);
+char *remove_string(char *, char *);
+char *remove_string_2(char *, char *);
+char *wordstrips(char *, char *);
+char *cut(char *, char *);
+char *cut2(char *, char *);
+char *strremove_wrapper(char *, char *);
+char *remove_word_wrapper(char *, char *);
+char *strcut_wrapper(char *, char *);
 
 struct part {
 	char *name;
-	char *(*f)(char *, char *);
+	char *(*f) (char *, char *);
 	int pass;
 	int clob;
 	double time;
 	int needsfree;
 	char *output;
-} *p, part[] = {
-	{ .name = "beastie cutout",	.f = &cutout },
-	{ .name = "beastie undebug",	.f = &undebug },
-	{ .name = "beastie split",	.f = &split },
-	{ .name = "Eddy_Em",		.f = &delsubstr },
-//	{ .name = "Eddy_Em",		.f = &_remove },	// never returns
-	{ .name = "Gvidon",		.f = &process_wrapper },
-	{ .name = "KennyMinigun",	.f = &strdel_wrapper },
-	{ .name = "nokachi",		.f = &remove_string },
-	{ .name = "qulinxao",		.f = &wordstrips },
-	{ .name = "true_admin #1",	.f = &cut },
-	{ .name = "true_admin #2",	.f = &cut2 },
-	{ .name = "wota #1",		.f = &strremove_wrapper },
-	{ .name = "wota #2",		.f = &remove_word_wrapper },
-	{ .name = "anonymous",		.f = &strcut_wrapper },
-	{ NULL },
+}   *p, part[] = {
+	{
+		.name = "beastie cutout",
+		.f = &cutout
+	},
+	{
+		.name = "beastie undebug",
+		.f = &undebug
+	},
+	{
+		.name = "beastie split",
+		.f = &split
+	},
+	{
+		.name = "Eddy_Em",
+		.f = &delsubstr
+	},
+#if 0				/* never returns */
+	{
+		.name = "Eddy_Em",
+		.f = &_remove
+	},
+#endif
+	{
+		.name = "Gvidon",
+		.f = &process_wrapper
+	},
+	{
+		.name = "KennyMinigun",
+		.f = &strdel_wrapper
+	},
+	{
+		.name = "nokachi",
+		.f = &remove_string
+	},
+	{
+		.name = "qulinxao",
+		.f = &wordstrips
+	},
+	{
+		.name = "true_admin #1",
+		.f = &cut
+	},
+	{
+		.name = "true_admin #2",
+		.f = &cut2
+	},
+	{
+		.name = "wota #1",
+		.f = &strremove_wrapper
+	},
+	{
+		.name = "wota #2",
+		.f = &remove_word_wrapper
+	},
+	{
+		.name = "anonymous",
+		.f = &strcut_wrapper
+	},
+	{
+		NULL
+	},
 };
 
 char *passstat[] = {"fails", "passes"};
 char *clobstat[] = {"-", "clobber"};
 char *freestat[] = {"-", "needs free"};
-
 /* strip whitespaces */
 char *
 strip(char *s)
 {
 	char *r, *p;
 
-	r = p = s; 
+	r = p = s;
 	while (*s && *p) {
 		if (*p == ' ')
 			p++;
@@ -96,7 +141,7 @@ void
 go(struct part *p, char *s)
 {
 	char *o;
-	
+
 	/* prepare a copy of test string for clobber functions */
 	if (p->clob)
 		s = strdup(s);
@@ -180,9 +225,9 @@ main()
 	for (p = part; p->name != NULL; p++) {
 		/* results */
 		printf("%-16s%10.2f ms%7s%10.1f %% slower than best\n",
-				p->name, p->time,
-				passstat[p->pass],
-				100.0 * (p->time - minimal) / minimal);
+		    p->name, p->time,
+		    passstat[p->pass],
+		    100.0 * (p->time - minimal) / minimal);
 
 
 		free(p->output);

@@ -8,13 +8,16 @@
 #include <stdio.h>
 #include <string.h>
 
-void strremove( char* s, const char* t )
+void 
+strremove(char *s, const char *t)
 {
-    size_t l = strlen( t );
-    char *d = s;
-	
-    do while( !strncmp( s, t, l ) ) s += l;
-    while(( *d++ = *s++ ));
+	size_t l = strlen(t);
+	char *d = s;
+
+	do
+		while (!strncmp(s, t, l))
+			s += l;
+	while ((*d++ = *s++));
 }
 
 char *
@@ -25,18 +28,18 @@ strremove_wrapper(char *hay, char *needle)
 	return hay;
 }
 
-void remove_word( char* s, const char* w )
+void 
+remove_word(char *s, const char *w)
 {
-    int l = strlen( w );
-    char* p = s;
-	
-    while(( p = strstr( p, w ) ))
-    {
-        if( ( p == s || isspace( p[ -1 ] ) ) && ( !p[ l ] || isspace( p[ l ] ) ) )
-            memset( p, ' ', l );
+	int l = strlen(w);
+	char *p = s;
 
-        p += l;
-    }
+	while ((p = strstr(p, w))) {
+		if ((p == s || isspace(p[-1])) && (!p[l] || isspace(p[l])))
+			memset(p, ' ', l);
+
+		p += l;
+	}
 }
 
 char *

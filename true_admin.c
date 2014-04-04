@@ -9,28 +9,34 @@
 #include <stdlib.h>
 #include <assert.h>
 
-char* cut(char *src, char *what) {
-  char *sub, *dst = malloc(strlen(src)+1), *result = dst;
-  assert(dst);
-  size_t wtflen = strlen(what);
+char *
+cut(char *src, char *what)
+{
+	char *sub, *dst = malloc(strlen(src) + 1), *result = dst;
+	assert(dst);
+	size_t wtflen = strlen(what);
 
-  while (*src) {
-    sub = strstr(src, what);
-    while(src != sub && (*dst++ = *src++));
-    if (src == sub) {
-      src = sub + wtflen;
-      continue; }
-  } 
-  return result;
+	while (*src) {
+		sub = strstr(src, what);
+		while (src != sub && (*dst++ = *src++));
+		if (src == sub) {
+			src = sub + wtflen;
+			continue;
+		}
+	}
+	return result;
 }
 
-char* cut2(char *src, char *what) {
-  char *sub, *dst = malloc(strlen(src)+1), *result = dst; assert(dst);
+char *
+cut2(char *src, char *what)
+{
+	char *sub, *dst = malloc(strlen(src) + 1), *result = dst;
+	assert(dst);
 
-  while (*src) {
-    while(src != strstr(src, what) && (*dst++ = *src++));
-    if (*src)
-      src = src + strlen(what);
-  } 
-  return result;
+	while (*src) {
+		while (src != strstr(src, what) && (*dst++ = *src++));
+		if (*src)
+			src = src + strlen(what);
+	}
+	return result;
 }
