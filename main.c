@@ -44,6 +44,7 @@ int passes = 20;
 
 char *nop(char *, char *);
 char *cutout(char *, char *);
+char *cutout_orig(char *, char *);
 char *undebug(char *, char *);
 char *split(char *, char *);
 char *delsubstr(char *, char *);
@@ -74,6 +75,7 @@ struct part {
 }   *p, part[] = {
 	{ .name = "anonymous", .fname = "nop", .f = &nop },
 	{ .name = "beastie", .fname = "cutout", .f = &cutout },
+	{ .name = "beastie", .fname = "cutout_orig", .f = &cutout_orig },
 	{ .name = "beastie", .fname = "undebug", .f = &undebug },
 	{ .name = "beastie", .fname = "split", .f = &split },
 	{ .name = "Eddy_Em", .fname = "delsubstr", .f = &delsubstr },
