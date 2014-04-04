@@ -24,8 +24,8 @@
 char string[] = "debug debugfs debug debug=1 systemd.debug debug";
 char target[] = "debugfs debug=1 systemd.debug";
 char needle[] = "debug";
-int rounds = 1000000;
-int passes = 5;
+int rounds = 100000;
+int passes = 100;
 
 char *cutout(char *, char *);		// bestie
 char *whiteout(char *, char *);		// bestie
