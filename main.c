@@ -18,7 +18,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 /* rules: https://www.linux.org.ru/forum/development/10349962?cid=10352344 */
 
@@ -203,8 +202,6 @@ result(struct part *p)
 int
 main(int argc, char **argv)
 {
-	int i;
-
 	for (tc = testcases; tc->string; tc++) {
 		fprintf(stderr, "\n%16s \"%s\"\n", "input", tc->string);
 		for (p = part; p->name; p++)
