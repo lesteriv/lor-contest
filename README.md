@@ -74,19 +74,19 @@ anonymous       | ok   | fail | fail | fail | ok   | fail
 Gros Relults
 ----
 
-<pre>
+sorted by success and time
+
 name            | passed  | gros time
 ---             | ---     | ---
 beastie cutout  | 85.71 % |  55.52 ms
+wota whiteout   | 85.71 % |  56.09 ms
 beastie undebug | 85.71 % |  56.97 ms
-Eddy_Em         | 28.57 % | 162.85 ms
-Gvidon          | 28.57 % |  74.31 ms
-KennyMinigun    | 28.57 % |  63.73 ms
 nokachi         | 85.71 % |  71.16 ms
 qulinxao        | 42.86 % |  65.50 ms
-true_admin      | 28.57 % |  89.96 ms
-true_admin 2    | 28.57 % | 191.53 ms
+KennyMinigun    | 28.57 % |  63.73 ms
 wota            | 28.57 % |  70.91 ms
-wota whiteout   | 85.71 % |  56.09 ms
+Gvidon          | 28.57 % |  74.31 ms
 anonymous       | 28.57 % |  83.14 ms
-</pre>
+true_admin      | 28.57 % |  89.96 ms
+Eddy_Em         | 28.57 % | 162.85 ms
+true_admin 2    | 28.57 % | 191.53 ms

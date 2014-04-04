@@ -181,13 +181,12 @@ runtest(struct part *p, struct test *t)
 void
 result(struct part *p)
 {
-	printf("Gros Relults\n----\n\n<pre>\n");
+	printf("\nGros Relults\n----\n\n");
 	printf("%-16s| %-8s| %-12s\n", "name", "passed", "gros time");
 	printf("%-16s| %-8s| %-12s\n", "---", "---", "---");
 	for (; p->name != NULL; p++)
 		printf("%-16s|%6.2f %% |%7.2f ms\n",
 		    p->name, 100.0 * p->passed / nelem(testcases), p->grostime);
-	printf("</pre>\n");
 }
 
 int
