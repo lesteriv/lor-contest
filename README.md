@@ -50,3 +50,22 @@ wota #1             322.62 ms  fails     194.5 % slower than best
 wota #2             109.56 ms passes       0.0 % slower than best
 anonymous           147.95 ms  fails      35.0 % slower than best
 </pre>
+
+test cases
+----------
+
+name | debug | debugfs | debug=1 | systemd.debug | debug 123 debug 456 | debug debugfs debug debug=1 systemd.debug debug
+expect | | debugfs | debug=1 | systemd.debug | 123 456 | debugfs debug=1 systemd.debug
+beastie cutout  | ok   | ok   | ok   | ok   | ok   | ok
+beastie undebug | ok   | ok   | ok   | ok   | ok   | ok
+beastie split   | fail | ok   | ok   | ok   | ok   | ok
+Eddy_Em         | fail | fail | fail | ok   | ok   | fail
+Gvidon          | ok   | fail | fail | fail | ok   | fail
+KennyMinigun    | ok   | fail | fail | fail | ok   | fail
+nokachi         | ok   | ok   | ok   | ok   | ok   | ok
+qulinxao        | ok   | ok   | fail | fail | ok   | fail
+true_admin      | ok   | fail | fail | fail | ok   | fail
+true_admin 2    | ok   | fail | fail | fail | ok   | fail
+wota            | ok   | fail | fail | fail | ok   | fail
+wota whiteout   | ok   | ok   | ok   | ok   | ok   | ok
+anonymous       | ok   | fail | fail | fail | ok   | fail
