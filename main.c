@@ -20,8 +20,6 @@
 #include <string.h>
 #include <unistd.h>
 
-#define nelem(n) (sizeof(n) / sizeof((n)[0]))
-
 /* rules: https://www.linux.org.ru/forum/development/10349962?cid=10352344 */
 
 struct test {
@@ -38,14 +36,13 @@ struct test {
 	{ NULL }
 };
 
-int rounds = 1000;
-int passes = 1000;
+int rounds = 100000;
+int passes = 20;
 
 char *cutout(char *, char *);
 char *undebug(char *, char *);
 char *split(char *, char *);
 char *delsubstr(char *, char *);
-char *_remove(char *, char *);
 char *process_wrapper(char *, char *);
 char *strdel_wrapper(char *, char *);
 char *remove_string(char *, char *);
@@ -60,33 +57,29 @@ char *strcut_wrapper(char *, char *);
 struct part {
 	char *name;
 	char *(*f) (char *, char *);
+	char *fname;
 	int pass;
-	int clob;
-	int needsfree;
 	double time;
 	double grostime;
 	int passed;
 }   *p, part[] = {
-	{ .name = "beastie cutout", .f = &cutout },
-	{ .name = "beastie undebug", .f = &undebug },
-//	{ .name = "beastie split", .f = &split },
-	{ .name = "Eddy_Em", .f = &delsubstr },
-//	{ .name = "Eddy_Em", .f = &_remove }, /* never returns */
-	{ .name = "Gvidon", .f = &process_wrapper },
-	{ .name = "KennyMinigun", .f = &strdel_wrapper },
-	{ .name = "nokachi", .f = &remove_string },
-	{ .name = "qulinxao", .f = &wordstrips },
-	{ .name = "true_admin", .f = &cut },
-	{ .name = "true_admin 2", .f = &cut2 },
-	{ .name = "wota", .f = &strremove_wrapper },
-	{ .name = "wota whiteout", .f = &remove_word_wrapper },
-	{ .name = "anonymous", .f = &strcut_wrapper },
+	{ .name = "beastie", .fname = "cutout", .f = &cutout },
+	{ .name = "beastie", .fname = "undebug", .f = &undebug },
+	{ .name = "beastie", .fname = "split", .f = &split },
+	{ .name = "Eddy_Em", .fname = "delsubstr", .f = &delsubstr },
+	{ .name = "Gvidon", .fname = "process", .f = &process_wrapper },
+	{ .name = "KennyMinigun", .fname = "strdel", .f = &strdel_wrapper },
+	{ .name = "nokachi", .fname = "remove", .f = &remove_string },
+	{ .name = "qulinxao", .fname = "wordstrings", .f = &wordstrips },
+	{ .name = "true_admin", .fname = "cut", .f = &cut },
+	{ .name = "true_admin", .fname = "cut2", .f = &cut2 },
+	{ .name = "wota", .fname = "strremove", .f = &strremove_wrapper },
+	{ .name = "wota", .fname = "remove_word", .f = &remove_word_wrapper },
+	{ .name = "anonymous", .fname = "strcut", .f = &strcut_wrapper },
 	{ NULL },
 };
 
 char *passstat[] = {"fail", "pass"};
-char *clobstat[] = {"xerox", "clobber"};
-char *freestat[] = {"no alloc", "needs free"};
 
 /* strip whitespaces */
 char *
@@ -110,21 +103,18 @@ strip(char *s)
 void
 go(struct part *p, char *s, char *n)
 {
-	char *o;
+	char *r, *o;
 
-	/* prepare a copy of test string for clobber functions */
-	if (p->clob)
-		s = strdup(s);
+	r = s = strdup(s);
 
 	/* fire! */
 	o = p->f(s, n);
 
-	if (p->clob)
-		free(s);
-
 	/* free internal allocated space */
-	if (p->needsfree)
+	if (o != s)
 		free(o);
+
+	free(r);
 }
 
 void
@@ -136,20 +126,14 @@ prepare(struct part *p, struct test *test)
 	t = strdup(test->target);
 	o = p->f(s, test->needle);
 
-	/* returns another pointer as passed, requiers free */
-	p->needsfree = o != s;
-
-	/* check input clobber */
-	p->clob = !!strcmp(s, test->string);
-
 	/* remove whitespaces from output for compare */
 	p->pass = !strcmp(strip(o), strip(t));
 	p->passed += p->pass;
 
+	if (o != s)
+		free(o);
 	free(s);
 	free(t);
-	if (p->needsfree)
-		free(o);
 }
 
 void
@@ -158,13 +142,12 @@ runtest(struct part *p, struct test *t)
 	struct timeval begin, end;
 	int i, k;
 
-	prepare(p, t);
+ 	prepare(p, t);
 
-	fprintf(stderr, "%16s ", p->name);
+	fprintf(stderr, "%16s ", p->fname);
 	p->time = 0.0;
 	for (k = 0; k < passes; k++) {
-		if (60 / (k + 1))
-			fprintf(stderr, ".");
+		fprintf(stderr, ".");
 		gettimeofday(&begin, NULL);
 		for (i = 0; i < rounds; i++)
 			go(p, t->string, t->needle);
@@ -181,13 +164,22 @@ runtest(struct part *p, struct test *t)
 void
 result(struct part *p)
 {
+	struct part *z;
+	double minval = 100000.0;
+
+	for (z = p; z->name != NULL; z++)
+		if (z->pass && z->grostime < minval)
+			minval = z->grostime;
+
 	printf("\nGros Relults\n----\n\n");
-	printf("%-16s| %-12s| %-12s\n", "name", "tests passed", "gros time");
-	printf("%-16s| %-12s| %-12s\n", "---", "---", "---");
+	printf("%-16s| %-16s| %-12s| %-12s| %-12s\n",
+	    "name", "func name", "passed", "gros time", "slower");
+	printf("%-16s| %-16s| %-12s| %-12s| %-12s\n",
+	    "---", "---", "---", "---", "---");
 	for (; p->name != NULL; p++)
-		printf("%-16s|%9.2f %% |%8.2f ms\n",
-		    p->name, 100.0 * p->passed / (nelem(testcases) - 1),
-		    p->grostime);
+		printf("%-16s| %-16s|%8d |%8.2f ms | %9.2f %% \n",
+		    p->name, p->fname, p->passed,
+		    p->grostime, 100.0 * (p->grostime - minval) / minval);
 }
 
 int
@@ -197,7 +189,7 @@ main(int argc, char **argv)
 
 	for (tc = testcases; tc->string; tc++) {
 		fprintf(stderr, "\n%16s \"%s\"\n", "input", tc->string);
-		for (p = part; p->name != NULL; p++)
+		for (p = part; p->name; p++)
 			runtest(p, tc);
 	}
 

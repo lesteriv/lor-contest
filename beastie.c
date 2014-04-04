@@ -70,23 +70,20 @@ char *
 split(char *hay, char *needle)
 {
 	char *p, *s = strdup(hay);
-	char *forfree = s;
 	size_t len = strlen(hay);
 	int first = 1;
 
-	while ((p = strsep(&s, " ")) != NULL) {
+	while ((p = strsep(&hay, " ")) != NULL) {
 		if (strcmp(p, needle) != 0) {
 			if (first) {
 				first = 0;
-				strncpy(hay, p, len);
+				strncpy(s, p, len);
 			} else {
-				strncat(hay, " ", len);
-				strncat(hay, p, len);
+				strncat(s, " ", len);
+				strncat(s, p, len);
 			}
 		}
 	}
 
-	free(forfree);
-
-	return hay;
+	return s;
 }

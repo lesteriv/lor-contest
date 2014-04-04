@@ -5,53 +5,28 @@ LOR Contest for a Medal of Lennart
 
 https://www.linux.org.ru/forum/development/10349962
 
-Results
--------
+Gros Relults
+----
 
-Average time of 5 passes each:
+sorted by success and time
 
-<pre>
-DATA
+name            | func name       | passed      | gros time   | slower
+---             | ---             | ---         | ---         | ---
+wota            | remove_word     |       6 |   75.64 ms |      0.00 %
+beastie         | undebug         |       6 |   76.34 ms |      0.92 %
+beastie         | cutout          |       6 |   78.26 ms |      3.46 %
+nokachi         | remove          |       6 |  157.40 ms |    108.09 %
+beastie         | split           |       5 |  182.92 ms |    141.83 %
+qulinxao        | wordstrings     |       3 |   69.81 ms |     -7.70 %
+wota            | strremove       |       2 |   70.27 ms |     -7.10 %
+Gvidon          | process         |       2 |   74.87 ms |     -1.02 %
+KennyMinigun    | strdel          |       2 |   63.98 ms |    -15.41 %
+anonymous       | strcut          |       2 |   81.30 ms |      7.48 %
+true_admin      | cut             |       2 |  164.18 ms |    117.05 %
+true_admin      | cut2            |       2 |  230.41 ms |    204.62 %
+Eddy_Em         | delsubstr       |       2 |  258.54 ms |    241.80 %
 
-input  "debug debugfs debug debug=1 systemd.debug debug"
-expect "debugfs debug=1 systemd.debug"
-
-EXECUTING
-
-beastie cutout       clobber           - fails   "systemd."
-beastie whiteout     clobber           - fails   "           fs            =1 systemd.           "
-beastie undebug      clobber           - passes  "debugfs debug=1 systemd.debug "
-beastie split        clobber           - passes  "debugfs debug=1 systemd.debug"
-Eddy_Em                    -  needs free fails   " fs  =1 systemd. "
-Gvidon               clobber           - fails   " fs  =1 systemd. "
-KennyMinigun         clobber           - fails   "s 1 systemd."
-nokachi                    -  needs free passes  " debugfs  debug=1 systemd.debug "
-qulinxao             clobber           - fails   "      debugfs            =1 systemd.           "
-true_admin #1              -  needs free fails   " fs  =1 systemd. "
-true_admin #2              -  needs free fails   " fs  =1 systemd. "
-wota #1              clobber           - fails   " fs  =1 systemd. "
-wota #2              clobber           - passes  "      debugfs       debug=1 systemd.debug      "
-anonymous            clobber           - fails   " fs  =1 systemd. "
-
-TIMING
-
-beastie cutout      230.68 ms  fails     110.5 % slower than best
-beastie whiteout     96.62 ms  fails     -11.8 % slower than best
-beastie undebug     116.77 ms passes       6.6 % slower than best
-beastie split       236.49 ms passes     115.8 % slower than best
-Eddy_Em             249.73 ms  fails     127.9 % slower than best
-Gvidon              291.68 ms  fails     166.2 % slower than best
-KennyMinigun        111.75 ms  fails       2.0 % slower than best
-nokachi             113.84 ms passes       3.9 % slower than best
-qulinxao            154.87 ms  fails      41.4 % slower than best
-true_admin #1        79.79 ms  fails     -27.2 % slower than best
-true_admin #2       198.71 ms  fails      81.4 % slower than best
-wota #1             322.62 ms  fails     194.5 % slower than best
-wota #2             109.56 ms passes       0.0 % slower than best
-anonymous           147.95 ms  fails      35.0 % slower than best
-</pre>
-
-test cases
+Test Cases
 ----------
 
 name | debug | debugfs | debug=1 | systemd.debug | debug 123 debug 456 | debug debugfs debug debug=1 systemd.debug debug
@@ -70,23 +45,3 @@ true_admin 2    | ok   | fail | fail | fail | ok   | fail
 wota            | ok   | fail | fail | fail | ok   | fail
 wota whiteout   | ok   | ok   | ok   | ok   | ok   | ok
 anonymous       | ok   | fail | fail | fail | ok   | fail
-
-Gros Relults
-----
-
-sorted by success and time
-
-name            | passed  | gros time
----             | ---     | ---
-beastie cutout  | 85.71 % |  55.52 ms
-wota whiteout   | 85.71 % |  56.09 ms
-beastie undebug | 85.71 % |  56.97 ms
-nokachi         | 85.71 % |  71.16 ms
-qulinxao        | 42.86 % |  65.50 ms
-KennyMinigun    | 28.57 % |  63.73 ms
-wota            | 28.57 % |  70.91 ms
-Gvidon          | 28.57 % |  74.31 ms
-anonymous       | 28.57 % |  83.14 ms
-true_admin      | 28.57 % |  89.96 ms
-Eddy_Em         | 28.57 % | 162.85 ms
-true_admin 2    | 28.57 % | 191.53 ms
