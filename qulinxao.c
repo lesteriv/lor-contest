@@ -12,7 +12,7 @@
 inline char *
 nxt(char *s)
 {
-	while (*++s > ' ')
+	while (*++s > ' ' && *s)
 		;
 	return s;
 }
