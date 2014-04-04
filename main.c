@@ -88,8 +88,6 @@ struct part {
 	{ NULL },
 };
 
-char *passstat[] = {"fail", "pass"};
-
 /* strip whitespaces */
 char *
 strip(char *s)
@@ -112,9 +110,9 @@ strip(char *s)
 void
 go(struct part *p, char *s, char *n)
 {
-	char *r, *o;
+	char *o;
 
-	r = s = strdup(s);
+	s = strdup(s);
 
 	/* fire! */
 	o = p->f(s, n);
@@ -123,7 +121,7 @@ go(struct part *p, char *s, char *n)
 	if (o != s)
 		free(o);
 
-	free(r);
+	free(s);
 }
 
 void
@@ -148,6 +146,7 @@ prepare(struct part *p, struct test *test)
 void
 runtest(struct part *p, struct test *t)
 {
+	char *stat[] = {"fail", "pass"};
 	struct timeval begin, end;
 	int i, k;
 
@@ -167,7 +166,7 @@ runtest(struct part *p, struct test *t)
 	/* average time */
 	p->time /= passes;
 	p->grostime += p->time;
-	fprintf(stderr, "%5s%9.2f ms\n", passstat[p->pass], p->time);
+	fprintf(stderr, "%5s%9.2f ms\n", stat[p->pass], p->time);
 }
 
 void
