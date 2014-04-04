@@ -25,3 +25,21 @@ strcut_wrapper(char *hay, char *needle)
 
 	return hay;
 }
+
+char* anon_strcut(char *where, char *what)
+{
+    char *dst = where, *p = where, prev;
+    for (prev = ' '; *p; prev = *p++)
+        if (prev == ' ') {
+            char *s1 = p, *s2 = what;
+            while (*s2 && *s1 == *s2) {++s1; ++s2;}
+            if (!(*s2 || (*s1 != ' ' && *s1)))
+                p = s1 - 1;
+            else
+                *dst++ = *p;
+        }
+        else
+            *dst++ = *p;
+    *dst = 0;
+    return where;
+}
