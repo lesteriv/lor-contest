@@ -19,6 +19,21 @@
 #include <string.h>
 
 char *
+cutout_orig(char *hay, char *needle)
+{
+	char *p, *s = hay;
+
+	while ((s = strstr(s, needle)) != NULL) {
+		if ((p = strchr(s, ' ')) != NULL)
+			memmove(s, p + 1, strlen(p));
+		else
+			*s = '\0';
+	}
+
+	return hay;
+}
+
+char *
 cutout(char *hay, char *needle)
 {
 	char *p, *s = hay;
@@ -40,6 +55,7 @@ cutout(char *hay, char *needle)
 
 	return hay;
 }
+
 /*
  * "debug" => ""
  * "debugfs" => "debugfs"
@@ -57,7 +73,8 @@ undebug(char *hay, char *needle)
 
 	while ((s = strstr(s, needle)) != NULL) {
 		n = s + len;
-		if ((*n == '\0' || *n++ == ' ') && (s == hay || *(s - 1) == ' '))
+		if ((*n == '\0' || *n++ == ' ') && (s == hay
+			|| *(s - 1) == ' '))
 			memmove(s, n, end - n + 1);
 		else
 			s = n;
