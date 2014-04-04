@@ -18,13 +18,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "part.h"
+#include <unistd.h>
 
 /* rules: https://www.linux.org.ru/forum/development/10349962?cid=10352344 */
 
-char string[] = "debug debugfs debug debug=1 systemd.debug debug";
-char target[] = "debugfs debug=1 systemd.debug";
-char needle[] = "debug";
+char *string = "debug debugfs debug debug=1 systemd.debug debug";
+char *target = "debugfs debug=1 systemd.debug";
+char *needle = "debug";
 int rounds = 100000;
 int passes = 100;
 
@@ -64,10 +64,10 @@ struct part {
 	{ .name = "KennyMinigun", .f = &strdel_wrapper },
 	{ .name = "nokachi", .f = &remove_string },
 	{ .name = "qulinxao", .f = &wordstrips },
-	{ .name = "true_admin #1", .f = &cut },
-	{ .name = "true_admin #2", .f = &cut2 },
-	{ .name = "wota #1", .f = &strremove_wrapper },
-	{ .name = "wota #2", .f = &remove_word_wrapper },
+	{ .name = "true_admin", .f = &cut },
+	{ .name = "true_admin 2", .f = &cut2 },
+	{ .name = "wota", .f = &strremove_wrapper },
+	{ .name = "wota whiteout", .f = &remove_word_wrapper },
 	{ .name = "anonymous", .f = &strcut_wrapper },
 	{ NULL },
 };
@@ -143,12 +143,43 @@ prepare(struct part *p)
 	free(t);
 }
 
+void
+usage()
+{
+	extern char *__progname;
+	fprintf(stderr, "usage: %s [-s <string>] [-t <taget>] [-n <needle>] [-p passess] [-r <rounds>] [-h]\n",
+	    __progname);
+	exit(1);
+}
+
 int
-main()
+main(int argc, char **argv)
 {
 	struct timeval begin, end;
-	int k, i;
+	int k, i, ch;
 	double minimal = 1000000.0;
+
+	while ((ch = getopt(argc, argv, "s:t:n:p:r:h")) != -1)
+		switch (ch) {
+		case 's':
+			string = strdup(optarg);
+			break;
+		case 't':
+			target = strdup(optarg);
+			break;
+		case 'n':
+			needle = strdup(optarg);
+			break;
+		case 'p':
+			passes = atoi(optarg);
+			break;
+		case 'r':
+			rounds = atoi(optarg);
+			break;
+		case 'h':
+		default:
+			usage();
+		}
 
 	for (p = part; p->name != NULL; p++) {
 		/* initialize */
