@@ -38,8 +38,8 @@ struct test {
 	{ NULL }
 };
 
-int rounds = 100000;
-int passes = 100;
+int rounds = 1000;
+int passes = 1000;
 
 char *cutout(char *, char *);
 char *undebug(char *, char *);
@@ -163,7 +163,7 @@ runtest(struct part *p, struct test *t)
 	fprintf(stderr, "%16s ", p->name);
 	p->time = 0.0;
 	for (k = 0; k < passes; k++) {
-		if (k % 3 == 0)
+		if (60 / (k + 1))
 			fprintf(stderr, ".");
 		gettimeofday(&begin, NULL);
 		for (i = 0; i < rounds; i++)
@@ -182,11 +182,12 @@ void
 result(struct part *p)
 {
 	printf("\nGros Relults\n----\n\n");
-	printf("%-16s| %-8s| %-12s\n", "name", "passed", "gros time");
-	printf("%-16s| %-8s| %-12s\n", "---", "---", "---");
+	printf("%-16s| %-12s| %-12s\n", "name", "tests passed", "gros time");
+	printf("%-16s| %-12s| %-12s\n", "---", "---", "---");
 	for (; p->name != NULL; p++)
-		printf("%-16s|%6.2f %% |%7.2f ms\n",
-		    p->name, 100.0 * p->passed / nelem(testcases), p->grostime);
+		printf("%-16s|%9.2f %% |%8.2f ms\n",
+		    p->name, 100.0 * p->passed / (nelem(testcases) - 1),
+		    p->grostime);
 }
 
 int
@@ -195,7 +196,7 @@ main(int argc, char **argv)
 	int i;
 
 	for (tc = testcases; tc->string; tc++) {
-		fprintf(stderr, "%16s \"%s\"\n", "input", tc->string);
+		fprintf(stderr, "\n%16s \"%s\"\n", "input", tc->string);
 		for (p = part; p->name != NULL; p++)
 			runtest(p, tc);
 	}
