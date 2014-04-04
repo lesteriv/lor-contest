@@ -99,20 +99,20 @@ struct part {
 
 /* strip whitespaces */
 char *
-strip(char *s)
+strip(char *p)
 {
-	char *r, *p;
+	char *d, *s;
 
-	r = p = s;
-	while (*s && *p) {
-		if (*p == ' ')
-			p++;
+	d = s = p;
+	while (*d && *s) {
+		if (*s == ' ')
+			s++;
 		else
-			*s++ = *p++;
+			*d++ = *s++;
 	}
-	*s = '\0';
+	*d = '\0';
 
-	return r;
+	return p;
 }
 
 
