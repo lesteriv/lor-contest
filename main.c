@@ -25,7 +25,7 @@ struct test {
 	char *string;
 	char *target;
 	char *needle;
-} *tc, testcases[] = {
+} testcases[] = {
 	{ "debug", "", "debug" },
 	{ "debugfs", "debugfs", "debug" },
 	{ "debug=1", "debug=1", "debug" },
@@ -73,7 +73,7 @@ struct part {
 	double time;
 	double grostime;
 	int passed;
-}   *p, part[] = {
+} part[] = {
 	{ .name = "anonymous", .fname = "nop", .f = &nop },
 	{ .name = "beastie", .fname = "cutout", .f = &cutout },
 	{ .name = "beastie", .fname = "cutout_orig", .f = &cutout_orig },
@@ -202,10 +202,13 @@ result(struct part *p)
 int
 main(int argc, char **argv)
 {
-	for (tc = testcases; tc->string; tc++) {
-		fprintf(stderr, "\n%16s \"%s\"\n", "input", tc->string);
+	struct part *p;
+	struct test *t;
+
+	for (t = testcases; t->string; t++) {
+		fprintf(stderr, "\n%16s \"%s\"\n", "input", t->string);
 		for (p = part; p->name; p++)
-			runtest(p, tc);
+			runtest(p, t);
 	}
 
 	result(part);
