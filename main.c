@@ -34,6 +34,8 @@ struct test {
 	{ "debug 123 debug 456", "123 456", "debug" },
 	{ "debug debugfs debug debug=1 systemd.debug debug", "debugfs debug=1 systemd.debug", "debug" },
 	{ "debu", "debu", "debug" },
+	{ "BOOT_IMAGE=/debug/vmlinuz-3.2.0-debug-amd64 debug=UUID=42debug5-6ee1-464c-bc41-debug42debug ro debug",
+	  "BOOT_IMAGE=/debug/vmlinuz-3.2.0-debug-amd64 debug=UUID=42debug5-6ee1-464c-bc41-debug42debug ro", "debug" },
 	{ NULL }
 };
 
