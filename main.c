@@ -81,6 +81,7 @@ struct part {
 	double time;
 	double grostime;
 	int passed;
+	char pchart[16];
 } part[] = {
 	{ .name = "anonymous", .fname = "nop", .f = &nop },
 	{ .name = "beastie", .fname = "cutout", .f = &cutout },
@@ -153,6 +154,7 @@ prepare(struct part *p, struct test *test)
 	/* remove whitespaces from output for compare */
 	p->pass = !strcmp(strip(o), strip(t));
 	p->passed += p->pass;
+	strncat(p->pchart, p->pass ? "*" : " ", 1);
 
 	if (o != s)
 		free(o);
@@ -228,13 +230,13 @@ result(struct part *p)
 			minval = z->grostime;
 
 	printf("\nGros Relults\n----\n\n");
-	printf("%-16s| %-16s| %-8s| %-12s| %-12s\n",
+	printf("%-16s| %-16s| %-10s| %-12s| %-12s\n",
 	    "name", "func name", "passed", "gros time", "slower");
-	printf("%-16s| %-16s| %-8s| %-12s| %-12s\n",
+	printf("%-16s| %-16s| %-10s| %-12s| %-12s\n",
 	    "---", "---", "---", "---", "---");
 	for (; p->name != NULL; p++)
-		printf("%-16s| %-16s|%8d |%9.2f ms | %9.2f %% \n",
-		    p->name, p->fname, p->passed,
+		printf("%-16s| %-16s| %-10s|%9.2f ms | %9.2f %% \n",
+		    p->name, p->fname, p->pchart,
 		    p->grostime, 100.0 * (p->grostime - minval) / minval);
 }
 

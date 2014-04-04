@@ -8,28 +8,28 @@ https://www.linux.org.ru/forum/development/10349962
 Gros Relults
 ----
 
-name            | func name       | passed  | gros time   | slower      
----             | ---             | ---     | ---         | ---         
-anonymous       | nop             |       4 |   122.12 ms |    -37.83 % 
-beastie         | cutout          |       8 |   259.51 ms |     32.10 % 
-beastie         | cutout_orig     |       3 |   333.16 ms |     69.59 % 
-beastie         | undebug         |       8 |   282.05 ms |     43.58 % 
-beastie         | split           |       7 |   505.40 ms |    157.27 % 
-Eddy_Em         | delsubstr       |       3 |   631.74 ms |    221.58 % 
-Gvidon          | process         |       3 |   713.79 ms |    263.35 % 
-KennyMinigun    | strdel          |       3 |   258.54 ms |     31.61 % 
-nokachi         | remove          |       7 |   383.76 ms |     95.35 % 
-qulinxao        | wordstrings     |       8 |   239.00 ms |     21.66 % 
-true_admin      | cut             |       3 |   379.67 ms |     93.27 % 
-true_admin      | cut2            |       3 |   699.92 ms |    256.29 % 
-wota            | strremove       |       3 |   667.68 ms |    239.88 % 
-wota            | remove_word     |       8 |   286.61 ms |     45.90 % 
-anonymous       | strcut          |       3 |   327.97 ms |     66.95 % 
-anonymous       | anon_strcut     |       8 |   222.85 ms |     13.44 % 
-puzan           | str_drop_str    |       8 |   327.03 ms |     66.47 % 
-qnikst          | undebugq        |       8 |   235.13 ms |     19.69 % 
-mix-mix         | strcut          |       8 |   312.42 ms |     59.03 % 
-Carb            | debugdel        |       8 |   196.45 ms |      0.00 % 
+name            | func name       | passed    | gros time   | slower      
+---             | ---             | ---       | ---         | ---         
+anonymous       | nop             |  ***  *   |   136.12 ms |    -39.02 % 
+beastie         | cutout          | ********* |   335.27 ms |     50.18 % 
+beastie         | cutout_orig     | *   * *   |   405.59 ms |     81.68 % 
+beastie         | undebug         | ********* |   338.16 ms |     51.47 % 
+beastie         | split           |  ******** |   681.69 ms |    205.36 % 
+Eddy_Em         | delsubstr       |    ** *   |   785.19 ms |    251.72 % 
+Gvidon          | process         | *   * *   |  1006.85 ms |    351.00 % 
+KennyMinigun    | strdel          | *   * *   |   349.09 ms |     56.37 % 
+nokachi         | remove          | ****** *  |   488.56 ms |    118.85 % 
+qulinxao        | wordstrings     | ********* |   312.89 ms |     40.15 % 
+true_admin      | cut             | *   * *   |   455.05 ms |    103.83 % 
+true_admin      | cut2            | *   * *   |  1062.44 ms |    375.91 % 
+wota            | strremove       | *   * *   |   835.42 ms |    274.21 % 
+wota            | remove_word     | ********* |   352.17 ms |     57.75 % 
+anonymous       | strcut          | *   * *   |   424.82 ms |     90.29 % 
+anonymous       | anon_strcut     | ********* |   295.01 ms |     32.15 % 
+puzan           | str_drop_str    | ********* |   463.46 ms |    107.60 % 
+qnikst          | undebugq        | ********* |   344.70 ms |     54.40 % 
+mix-mix         | strcut          | ********* |   402.85 ms |     80.45 % 
+Carb            | debugdel        | ********* |   223.25 ms |      0.00 % 
 
 Test Cases
 ----------
