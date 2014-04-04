@@ -20,11 +20,24 @@
 #include <string.h>
 #include <unistd.h>
 
+#define nelem(n) (sizeof(n) / sizeof((n)[0]))
+
 /* rules: https://www.linux.org.ru/forum/development/10349962?cid=10352344 */
 
-char *string = "debug debugfs debug debug=1 systemd.debug debug";
-char *target = "debugfs debug=1 systemd.debug";
-char *needle = "debug";
+struct test {
+	char *string;
+	char *target;
+	char *needle;
+} *tc, testcases[] = {
+	{ "debug", "", "debug" },
+	{ "debugfs", "debugfs", "debug" },
+	{ "debug=1", "debug=1", "debug" },
+	{ "systemd.debug", "systemd.debug", "debug" },
+	{ "debug 123 debug 456", "123 456", "debug" },
+	{ "debug debugfs debug debug=1 systemd.debug debug", "debugfs debug=1 systemd.debug", "debug" },
+	{ NULL }
+};
+
 int rounds = 100000;
 int passes = 100;
 
@@ -49,17 +62,16 @@ struct part {
 	char *(*f) (char *, char *);
 	int pass;
 	int clob;
-	double time;
 	int needsfree;
-	char *output;
+	double time;
+	double grostime;
+	int passed;
 }   *p, part[] = {
 	{ .name = "beastie cutout", .f = &cutout },
 	{ .name = "beastie undebug", .f = &undebug },
-	{ .name = "beastie split", .f = &split },
+//	{ .name = "beastie split", .f = &split },
 	{ .name = "Eddy_Em", .f = &delsubstr },
-#if 0				/* never returns */
-	{ .name = "Eddy_Em", .f = &_remove },
-#endif
+//	{ .name = "Eddy_Em", .f = &_remove }, /* never returns */
 	{ .name = "Gvidon", .f = &process_wrapper },
 	{ .name = "KennyMinigun", .f = &strdel_wrapper },
 	{ .name = "nokachi", .f = &remove_string },
@@ -72,7 +84,7 @@ struct part {
 	{ NULL },
 };
 
-char *passstat[] = {"fails", "passes"};
+char *passstat[] = {"fail", "pass"};
 char *clobstat[] = {"xerox", "clobber"};
 char *freestat[] = {"no alloc", "needs free"};
 
@@ -96,7 +108,7 @@ strip(char *s)
 
 
 void
-go(struct part *p, char *s)
+go(struct part *p, char *s, char *n)
 {
 	char *o;
 
@@ -105,7 +117,7 @@ go(struct part *p, char *s)
 		s = strdup(s);
 
 	/* fire! */
-	o = p->f(s, needle);
+	o = p->f(s, n);
 
 	if (p->clob)
 		free(s);
@@ -116,113 +128,80 @@ go(struct part *p, char *s)
 }
 
 void
-prepare(struct part *p)
+prepare(struct part *p, struct test *test)
 {
 	char *s, *t, *o;
 
-	s = strdup(string);
-	t = strdup(target);
-	o = p->f(s, needle);
-	p->output = strdup(o);
+	s = strdup(test->string);
+	t = strdup(test->target);
+	o = p->f(s, test->needle);
 
 	/* returns another pointer as passed, requiers free */
 	p->needsfree = o != s;
 
 	/* check input clobber */
-	p->clob = !!strcmp(s, string);
+	p->clob = !!strcmp(s, test->string);
 
 	/* remove whitespaces from output for compare */
 	p->pass = !strcmp(strip(o), strip(t));
-	p->time = 0.0;
-
-	/* free internal allocated space */
-	if (p->needsfree)
-		free(o);
+	p->passed += p->pass;
 
 	free(s);
 	free(t);
+	if (p->needsfree)
+		free(o);
 }
 
 void
-usage()
+runtest(struct part *p, struct test *t)
 {
-	extern char *__progname;
-	fprintf(stderr, "usage: %s [-s <string>] [-t <taget>] [-n <needle>] [-p passess] [-r <rounds>] [-h]\n",
-	    __progname);
-	exit(1);
+	struct timeval begin, end;
+	int i, k;
+
+	prepare(p, t);
+
+	fprintf(stderr, "%16s ", p->name);
+	p->time = 0.0;
+	for (k = 0; k < passes; k++) {
+		if (k % 3 == 0)
+			fprintf(stderr, ".");
+		gettimeofday(&begin, NULL);
+		for (i = 0; i < rounds; i++)
+			go(p, t->string, t->needle);
+		gettimeofday(&end, NULL);
+		p->time += (end.tv_sec - begin.tv_sec) * 1000.0;
+		p->time += (end.tv_usec - begin.tv_usec) / 1000.0;
+	}
+	/* average time */
+	p->time /= passes;
+	p->grostime += p->time;
+	fprintf(stderr, "%5s%9.2f ms\n", passstat[p->pass], p->time);
+}
+
+void
+result(struct part *p)
+{
+	printf("Gros Relults\n----\n\n<pre>\n");
+	printf("%-16s| %-8s| %-12s\n", "name", "passed", "gros time");
+	printf("%-16s| %-8s| %-12s\n", "---", "---", "---");
+	for (; p->name != NULL; p++)
+		printf("%-16s|%6.2f %% |%7.2f ms\n",
+		    p->name, 100.0 * p->passed / nelem(testcases), p->grostime);
+	printf("</pre>\n");
 }
 
 int
 main(int argc, char **argv)
 {
-	struct timeval begin, end;
-	int k, i, ch;
-	double minimal = 1000000.0;
-	int initonly = 0;
+	int i;
 
-	while ((ch = getopt(argc, argv, "s:t:n:p:r:ih")) != -1)
-		switch (ch) {
-		case 's':
-			string = strdup(optarg);
-			break;
-		case 't':
-			target = strdup(optarg);
-			break;
-		case 'n':
-			needle = strdup(optarg);
-			break;
-		case 'p':
-			passes = atoi(optarg);
-			break;
-		case 'r':
-			rounds = atoi(optarg);
-			break;
-		case 'i':
-			initonly = 1;
-			break;
-		case 'h':
-		default:
-			usage();
-		}
-
-	/* initialize */
-	for (p = part; p->name != NULL; p++)
-		prepare(p);
-
-	if (initonly)
-		return 0;
-
-	printf("input  \"%s\"\n", string);
-	printf("expect \"%s\"\n", target);
-
-	for (p = part; p->name != NULL; p++) {
-		printf("%-16s%-8s\"%s\"\n", p->name, passstat[p->pass], p->output);
-
-		p->time = 0.0;
-		for (k = 0; k < passes; k++) {
-			gettimeofday(&begin, NULL);
-			for (i = 0; i < rounds; i++)
-				go(p, string);
-			gettimeofday(&end, NULL);
-			p->time += (end.tv_sec - begin.tv_sec) * 1000.0;
-			p->time += (end.tv_usec - begin.tv_usec) / 1000.0;
-		}
-		/* average time */
-		p->time /= passes;
-		if (p->pass && p->time < minimal)
-			minimal = p->time;
+	for (tc = testcases; tc->string; tc++) {
+		fprintf(stderr, "%16s \"%s\"\n", "input", tc->string);
+		for (p = part; p->name != NULL; p++)
+			runtest(p, tc);
 	}
 
-	for (p = part; p->name != NULL; p++) {
-		/* results */
-		printf("%-16s%10.2f ms%7s%10.1f %% slower than best\n",
-		    p->name, p->time,
-		    passstat[p->pass],
-		    100.0 * (p->time - minimal) / minimal);
-
-
-		free(p->output);
-	}
+	result(part);
 
 	return 0;
 }
