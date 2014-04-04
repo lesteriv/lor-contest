@@ -23,17 +23,17 @@ strdel(const char *needle, char *haystack)
 	for (i = 0, j = 0; i < h_length; i++) {
 		if (haystack[i] == needle[0] && strncmp(&haystack[i], needle, n_length) == 0) {
 			i += n_length;
-			//shift iterator position forward
+			/* shift iterator position forward */
 		} else {
 			haystack[j] = haystack[i];
-			//copy symbol to non - shifted position(backwards)
-			    j++;
+			/* copy symbol to non - shifted position(backwards) */
+			j++;
 		}
 	}
 	haystack[j] = '\0';
-	//FINISH HIM !
+	/* FINISH HIM ! */
 
-	    return haystack;
+	return haystack;
 }
 
 char *
