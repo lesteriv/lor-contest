@@ -36,6 +36,8 @@ struct test {
 	{ "debu", "debu", "debug" },
 	{ "BOOT_IMAGE=/debug/vmlinuz-3.2.0-debug-amd64 debug=UUID=42debug5-6ee1-464c-bc41-debug42debug ro debug",
 	  "BOOT_IMAGE=/debug/vmlinuz-3.2.0-debug-amd64 debug=UUID=42debug5-6ee1-464c-bc41-debug42debug ro", "debug" },
+	{ "BOOT_IMAGE=/debug/vmlinuz-3.2.0-debug-amd64 dolvm debug debug=UUID=42debug5-6ee1-464c-bc41-debug42debug debug ro",
+	  "BOOT_IMAGE=/debug/vmlinuz-3.2.0-debug-amd64 dolvm debug=UUID=42debug5-6ee1-464c-bc41-debug42debug ro", "debug" },
 	{ NULL }
 };
 
