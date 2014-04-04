@@ -13,25 +13,25 @@ Average time of 5 passes each:
 <pre>
 DATA
 
-input  >debug debugfs debug debug=1 systemd.debug debug<
-expect >debugfs debug=1 systemd.debug<
+input  "debug debugfs debug debug=1 systemd.debug debug"
+expect "debugfs debug=1 systemd.debug"
 
 EXECUTING
 
-beastie cutout       clobber           - fails   >systemd.<
-beastie whiteout     clobber           - fails   >           fs            =1 systemd.           <
-beastie undebug      clobber           - passes  >debugfs debug=1 systemd.debug <
-beastie split        clobber           - passes  >debugfs debug=1 systemd.debug<
-Eddy_Em                    -  needs free fails   > fs  =1 systemd. <
-Gvidon               clobber           - fails   > fs  =1 systemd. <
-KennyMinigun         clobber           - fails   >s 1 systemd.<
-nokachi                    -  needs free passes  > debugfs  debug=1 systemd.debug <
-qulinxao             clobber           - fails   >      debugfs            =1 systemd.           <
-true_admin #1              -  needs free fails   > fs  =1 systemd. <
-true_admin #2              -  needs free fails   > fs  =1 systemd. <
-wota #1              clobber           - fails   > fs  =1 systemd. <
-wota #2              clobber           - passes  >      debugfs       debug=1 systemd.debug      <
-anonymous            clobber           - fails   > fs  =1 systemd. <
+beastie cutout       clobber           - fails   "systemd."
+beastie whiteout     clobber           - fails   "           fs            =1 systemd.           "
+beastie undebug      clobber           - passes  "debugfs debug=1 systemd.debug "
+beastie split        clobber           - passes  "debugfs debug=1 systemd.debug"
+Eddy_Em                    -  needs free fails   " fs  =1 systemd. "
+Gvidon               clobber           - fails   " fs  =1 systemd. "
+KennyMinigun         clobber           - fails   "s 1 systemd."
+nokachi                    -  needs free passes  " debugfs  debug=1 systemd.debug "
+qulinxao             clobber           - fails   "      debugfs            =1 systemd.           "
+true_admin #1              -  needs free fails   " fs  =1 systemd. "
+true_admin #2              -  needs free fails   " fs  =1 systemd. "
+wota #1              clobber           - fails   " fs  =1 systemd. "
+wota #2              clobber           - passes  "      debugfs       debug=1 systemd.debug      "
+anonymous            clobber           - fails   " fs  =1 systemd. "
 
 TIMING
 
