@@ -15,12 +15,17 @@
  */
 
 #include <sys/time.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <err.h>
 #if MTRACE
 #include <mcheck.h>
 #endif
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
 
 /* rules: https://www.linux.org.ru/forum/development/10349962?cid=10352344 */
 
@@ -184,6 +189,34 @@ runtest(struct part *p, struct test *t)
 	fprintf(stderr, "%5s%9.2f ms\n", stat[p->pass], p->time);
 }
 
+void
+spawn(struct part *p, struct test *t)
+{
+	pid_t pid;
+	int stat, fd[2];
+
+	pipe(fd);
+
+	switch ((pid = fork())) {
+	case -1:
+		warnx("forkin of %s failed", p->fname);
+		break;
+	case 0:		/* child */
+		close(fd[0]);
+		runtest(p, t);
+		write(fd[1], p, sizeof(struct part));
+		exit(0);
+		break;
+	default:	/* parent */
+		close(fd[1]);
+		read(fd[0], p, sizeof(struct part));
+		waitpid(pid, &stat, 0);
+		if (WEXITSTATUS(stat) != 0)
+			warnx("%s died with %d", p->fname, WEXITSTATUS(stat));
+		break;
+	}
+}
+
 static void
 result(struct part *p)
 {
@@ -217,7 +250,7 @@ main(int argc, char **argv)
 	for (t = testcases; t->string; t++) {
 		fprintf(stderr, "\n%16s \"%s\"\n", "input", t->string);
 		for (p = part; p->name; p++)
-			runtest(p, t);
+			spawn(p, t);
 	}
 
 	result(part);
