@@ -39,6 +39,7 @@ struct test {
 int rounds = 100000;
 int passes = 20;
 
+char *nop(char *, char *);
 char *cutout(char *, char *);
 char *undebug(char *, char *);
 char *split(char *, char *);
@@ -63,6 +64,7 @@ struct part {
 	double grostime;
 	int passed;
 }   *p, part[] = {
+	{ .name = "anonymous", .fname = "nop", .f = &nop },
 	{ .name = "beastie", .fname = "cutout", .f = &cutout },
 	{ .name = "beastie", .fname = "undebug", .f = &undebug },
 	{ .name = "beastie", .fname = "split", .f = &split },
