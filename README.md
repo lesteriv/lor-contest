@@ -5,8 +5,15 @@ LOR Contest for a Medal of Lennart
 
 https://www.linux.org.ru/forum/development/10349962
 
+Rules
+-----
+
+Allowed API: http://www.cs.bham.ac.uk/~exr/teaching/lectures/systems/08_09/docs/kernelAPI/x1820.html
+
+Test cases: https://www.linux.org.ru/forum/development/10349962?cid=10352344
+
 Gros Relults
-----
+------------
 
 name            | func name       | passed    | gros time   | slower      
 ---             | ---             | ---       | ---         | ---         
