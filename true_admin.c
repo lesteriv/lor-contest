@@ -30,7 +30,7 @@ cut(char *src, char *what)
 char *
 cut2(char *src, char *what)
 {
-	char *sub, *dst = malloc(strlen(src) + 1), *result = dst;
+	char *dst = malloc(strlen(src) + 1), *result = dst;
 	assert(dst);
 
 	while (*src) {
