@@ -10,4 +10,4 @@ $(PROG): $(OBJS)
 clean:
 	$(RM) $(OBJS) $(PROG)
 
-PHONY: clean
+.PHONY: clean
