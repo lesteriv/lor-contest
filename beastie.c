@@ -70,6 +70,7 @@ char *
 split(char *hay, char *needle)
 {
 	char *p, *s = strdup(hay);
+	char *forfree = s;
 	size_t len = strlen(hay);
 	int first = 1;
 
@@ -85,7 +86,7 @@ split(char *hay, char *needle)
 		}
 	}
 
-	free(s);
+	free(forfree);
 
 	return hay;
 }
