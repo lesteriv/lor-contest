@@ -158,8 +158,9 @@ main(int argc, char **argv)
 	struct timeval begin, end;
 	int k, i, ch;
 	double minimal = 1000000.0;
+	int initonly = 0;
 
-	while ((ch = getopt(argc, argv, "s:t:n:p:r:h")) != -1)
+	while ((ch = getopt(argc, argv, "s:t:n:p:r:ih")) != -1)
 		switch (ch) {
 		case 's':
 			string = strdup(optarg);
@@ -176,15 +177,20 @@ main(int argc, char **argv)
 		case 'r':
 			rounds = atoi(optarg);
 			break;
+		case 'i':
+			initonly = 1;
+			break;
 		case 'h':
 		default:
 			usage();
 		}
 
-	for (p = part; p->name != NULL; p++) {
-		/* initialize */
+	/* initialize */
+	for (p = part; p->name != NULL; p++)
 		prepare(p);
-	}
+
+	if (initonly)
+		return 0;
 
 	printf("\nDATA\n\n");
 	printf("input  \"%s\"\n", string);

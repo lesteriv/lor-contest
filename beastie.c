@@ -29,15 +29,14 @@ cutout(char *hay, char *needle)
 		match = strcmp(s, needle);
 		*p = ' ';
 
-		if (match)
-			s = p + 1;
-		else
+		if (match == 0)
 			memmove(s, p + 1, strlen(p));
+		else
+			s = p + 1;
 	}
 
-	do {
-		*s-- = '\0';
-	} while (*s == ' ');
+	if (strcmp(s, needle) == 0)
+		*s = '\0';
 
 	return hay;
 }
