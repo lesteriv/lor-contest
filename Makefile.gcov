@@ -8,6 +8,6 @@ $(PROG): $(OBJS)
 	$(CC) $(CFLAGS) -o $(PROG) $(OBJS)
 
 clean:
-	$(RM) $(OBJS) $(PROG)
+	$(RM) $(OBJS) $(PROG) *.gcda *.gcno *.c.gcov
 
 .PHONY: clean
