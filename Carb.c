@@ -19,7 +19,7 @@ debugdel(char *str)
 	char *ret = str;
 	if (_strcmp(str + 0) && (*(str + 5) == ' ' || *(str + 5) == '\0'))
 		memset(str + 0, ' ', 5), str += 5;
-	while (*(++str) != '\0')
+	while ((str = strchr(++str, ' ')))
 		if ((*(str + 0) == ' ') && _strcmp(str + 1)
 		    && (*(str + 6) == ' ' || *(str + 6) == '\0'))
 			memset(str + 1, ' ', 5), str += 5;
