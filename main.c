@@ -161,7 +161,7 @@ main()
 	printf("\nEXECUTING\n\n");
 	for (p = part; p->name != NULL; p++) {
 		printf("%-16s%12s%12s", p->name, clobstat[p->clob], freestat[p->needsfree]);
-		printf(" %-8s>%s<\n", passstat[p->pass], p->output);
+		printf(" %-8s\"%s\"\n", passstat[p->pass], p->output);
 
 		p->time = 0.0;
 		for (k = 0; k < passes; k++) {
