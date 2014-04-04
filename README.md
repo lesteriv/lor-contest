@@ -55,6 +55,7 @@ test cases
 ----------
 
 name | debug | debugfs | debug=1 | systemd.debug | debug 123 debug 456 | debug debugfs debug debug=1 systemd.debug debug
+---- | ---- | ---- | ---- | ---- | ---- | ----
 expect | | debugfs | debug=1 | systemd.debug | 123 456 | debugfs debug=1 systemd.debug
 beastie cutout  | ok   | ok   | ok   | ok   | ok   | ok
 beastie undebug | ok   | ok   | ok   | ok   | ok   | ok
