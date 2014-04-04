@@ -73,8 +73,8 @@ struct part {
 };
 
 char *passstat[] = {"fails", "passes"};
-char *clobstat[] = {"-", "clobber"};
-char *freestat[] = {"-", "needs free"};
+char *clobstat[] = {"xerox", "clobber"};
+char *freestat[] = {"no alloc", "needs free"};
 
 /* strip whitespaces */
 char *
@@ -192,14 +192,11 @@ main(int argc, char **argv)
 	if (initonly)
 		return 0;
 
-	printf("\nDATA\n\n");
 	printf("input  \"%s\"\n", string);
 	printf("expect \"%s\"\n", target);
 
-	printf("\nEXECUTING\n\n");
 	for (p = part; p->name != NULL; p++) {
-		printf("%-16s%12s%12s", p->name, clobstat[p->clob], freestat[p->needsfree]);
-		printf(" %-8s\"%s\"\n", passstat[p->pass], p->output);
+		printf("%-16s%-8s\"%s\"\n", p->name, passstat[p->pass], p->output);
 
 		p->time = 0.0;
 		for (k = 0; k < passes; k++) {
@@ -216,7 +213,6 @@ main(int argc, char **argv)
 			minimal = p->time;
 	}
 
-	printf("\nTIMING\n\n");
 	for (p = part; p->name != NULL; p++) {
 		/* results */
 		printf("%-16s%10.2f ms%7s%10.1f %% slower than best\n",
