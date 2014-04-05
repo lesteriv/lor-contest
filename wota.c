@@ -51,7 +51,7 @@ remove_word_wrapper(char *hay, char *needle)
 }
 
 void 
-undelete(char *s)
+undebug_wota(char *s)
 {
 	long v = *((long*)s);
 	if( ( v & 0x000000FFFFFFFFFF ) == 0x6775626564 )
@@ -92,7 +92,7 @@ undelete(char *s)
 }
 
 char *
-undelete_wrapper(char *hay, char *needle)
+undebug_wota_wrapper(char *hay, char *needle)
 {
 	undelete(hay);
 
