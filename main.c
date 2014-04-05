@@ -59,6 +59,7 @@ char *cutout(char *, char *);
 char *cutout_orig(char *, char *);
 char *undebug(char *, char *);
 char *split(char *, char *);
+char *wipeout(char *, char *);
 char *delsubstr(char *, char *);
 char *process_wrapper(char *, char *);
 char *strdel_wrapper(char *, char *);
@@ -93,6 +94,7 @@ struct part {
 	{ .name = "beastie", .fname = "cutout_orig", .f = &cutout_orig },
 	{ .name = "beastie", .fname = "undebug", .f = &undebug },
 	{ .name = "beastie", .fname = "split", .f = &split },
+	{ .name = "beastie", .fname = "wipeout", .f = &wipeout },
 	{ .name = "Eddy_Em", .fname = "delsubstr", .f = &delsubstr },
 	{ .name = "Gvidon", .fname = "process", .f = &process_wrapper },
 	{ .name = "KennyMinigun", .fname = "strdel", .f = &strdel_wrapper },
@@ -238,24 +240,32 @@ spawn(struct part *p, struct test *t)
 }
 
 static void
-result(struct part *p)
+result(struct part *p, char *user)
 {
 	struct part *z;
 	double minval = 100000.0;
 
 	for (z = p; z->name != NULL; z++)
-		if (strcmp(z->fname, "nop") && z->grostime < minval)
-			minval = z->grostime;
+		if (strcmp(z->fname, "nop") != 0 && z->grostime < minval) {
+			if (user) {
+				if (strcmp(user, z->name) == 0)
+					minval = z->grostime;
+			} else
+				minval = z->grostime;
+		}
 
 	printf("\nGros Relults\n----\n\n");
 	printf("%-16s | %-16s | %-16s | %-12s | %-12s\n",
 	    "name", "func name", "passed", "gros time", "slower");
 	printf("%-16s | %-16s | %-16s | %-12s | %-12s\n",
 	    "---", "---", "---", "---", "---");
-	for (; p->name != NULL; p++)
+	for (; p->name != NULL; p++) {
+		if (user && strcmp(user, p->name) != 0)
+			continue;
 		printf("%-16s | %-16s | %-16s | %9.2f ms | %9.2f %% \n",
 		    p->name, p->fname, p->pchart,
 		    p->grostime, 100.0 * (p->grostime - minval) / minval);
+	}
 }
 
 void
@@ -310,7 +320,7 @@ main(int argc, char **argv)
 		}
 	}
 
-	result(part);
+	result(part, user);
 #if MTRACE
 	muntrace();
 #endif

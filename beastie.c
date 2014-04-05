@@ -104,3 +104,48 @@ split(char *hay, char *needle)
 
 	return s;
 }
+
+/* FSM */
+char *
+wipeout(char *hay, char *needle)
+{
+	char *p, *s = hay;
+	int inspace = 0;
+	int state = 0;
+
+	/* FSM: whiteout needle */
+	do {
+		if  (state == -1) {
+			if (*s == ' ')
+				state = 0;
+		} else {
+			if  (needle[state] == '\0') {
+				if (*s == ' ' || *s == '\0')
+					for (p = s; state > 0; state--)
+						*--p = ' ';
+				else
+					state = -1;
+			} else {
+				if (needle[state] == *s)
+					state++;
+				else
+					state = -1;
+			}
+		}
+	} while (*s++);
+
+	/* collapse spaces */
+	p = s = hay;
+	while (*s && *s == ' ')
+		s++;
+	do {
+		if (*s != ' ' || !inspace)
+			*p++ = *s;
+		inspace = *s++ == ' ';
+	} while (*s);
+	do
+		*p = '\0';
+	while (*--p == ' ');
+
+	return hay;
+}
