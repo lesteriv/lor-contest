@@ -71,6 +71,7 @@ char *remove_word_wrapper(char *, char *);
 char *strcut_wrapper(char *, char *);
 char *str_drop_str(char *, char *);
 char *undebugq(char *, char *);
+char *undebugq_ker(char *, char *);
 char *strcutm(char *, char *);
 char *carb_wrapper(char *, char *);
 char *anon_strcut(char *, char *);
@@ -102,7 +103,8 @@ struct part {
 	{ .name = "anonymous", .fname = "strcut", .f = &strcut_wrapper },
 	{ .name = "anonymous", .fname = "anon_strcut", .f = &anon_strcut},
 	{ .name = "puzan", .fname = "str_drop_str", .f = &str_drop_str },
-	{ .name = "qnikst", .fname = "undebugq", .f = &undebugq },
+	{ .name = "qnikst", .fname = "undebugq (userspace)", .f = &undebugq },
+	{ .name = "qnikst", .fname = "undebugq", .f = &undebugq_ker },
 	{ .name = "mix-mix", .fname = "strcut", .f = &strcutm },
 	{ .name = "Carb", .fname = "debugdel", .f = &carb_wrapper },
 	{ NULL },
