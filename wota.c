@@ -30,46 +30,37 @@ remove_word_wrapper(char *hay, char *needle)
     return hay;
 }
 
+extern char *strchrnul (const char *__s, int __c);
+
 void
 undebug_wota(char *s)
 {
-    long v = *((long*)s);
-    if( ( v & 0x000000FFFFFFFFFF ) == 0x6775626564 )
-    {
-        char s5 = ( v & 0x0000FF0000000000 ) >> 40;
-        if( s5 )
-        {
-            if( s5 == 32 )
-                memset( s, ' ', 5 );
+    char* p;
 
-            s += 6;
-        }
-        else
-        {
-            *s = 0;
-            return;
-        }
-    }
-
-    while(( s = strchr( ++s, ' ' ) ))
+    for( ; ( p = strchrnul( s, ' ' ) ) ; s = p + 1 )
     {
-        v = *((long*)s);
-        if( ( v & 0x0000FFFFFFFFFFFF ) == 0x677562656420 )
+        if( p - s != 5 )
         {
-            char s6 = ( v & 0x00FF000000000000 ) >> 48;
-            if( !s6 )
-            {
-                *s = 0;
+            if( !*p )
                 break;
-            }
-            else if( s6 == ' ' )
-            {
-                memset( s + 1, ' ', 5 );
-                s += 6;
-            }
+
+            continue;
         }
+
+        long v = *((long*)s);
+        if( ( v & 0x000000FFFFFFFFFF ) != 0x6775626564 )
+        {
+            if( !*p )
+                break;
+        }
+
+        memset( s, ' ', 5 );
+
+        if( !*p )
+            break;
     }
 }
+
 
 char *
 undebug_wota_wrapper(char *hay, char *needle)
