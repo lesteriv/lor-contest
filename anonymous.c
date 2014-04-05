@@ -47,3 +47,18 @@ anon_strcut(char *where, char *what)
 	*dst = 0;
 	return where;
 }
+
+/* https://www.linux.org.ru/forum/development/10349962?cid=10358064 */
+
+char *
+anon_wipedebug(char *where, char *unused)
+{
+	char *p = where - 1;
+	do {
+		++p;
+		if (*(int *)p == 'ubed' && (*(int *)(p + 2) == ' gub'
+		    || *(int *)(p + 2) == '\0gub'))
+			*(int *)p = '    ', p[4] = ' ', p += 5;
+	} while ((p = strchr(p, ' ')));
+	return where;
+}

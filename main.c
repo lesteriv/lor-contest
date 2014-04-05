@@ -98,6 +98,7 @@ char *strcutm(char *, char *);
 char *carb_wrapper(char *, char *);
 char *anon_strcut(char *, char *);
 char *undebug_wota_wrapper(char *, char *);
+char *anon_wipedebug(char *, char *);
 
 struct part {
 	char *name;
@@ -109,7 +110,7 @@ struct part {
 	int passed;
 	char pchart[16];
 } part[] = {
-	{ .name = "anonymous", .fname = "nop", .f = &nop },
+	{ .name = "nop", .fname = "nop", .f = &nop },
 	{ .name = "beastie", .fname = "cutout", .f = &cutout },
 	{ .name = "beastie", .fname = "cutout_orig", .f = &cutout_orig },
 	{ .name = "beastie", .fname = "undebug", .f = &undebug },
@@ -127,6 +128,7 @@ struct part {
 	{ .name = "wota", .fname = "undebug_wota", .f = &undebug_wota_wrapper },
 	{ .name = "anonymous", .fname = "strcut", .f = &strcut_wrapper },
 	{ .name = "anonymous", .fname = "anon_strcut", .f = &anon_strcut},
+	{ .name = "anonymous", .fname = "anon_wipedebug", .f = &anon_wipedebug},
 	{ .name = "puzan", .fname = "str_drop_str", .f = &str_drop_str },
 	{ .name = "puzan", .fname = "str_mask_str", .f = &str_mask_str },
 	{ .name = "qnikst", .fname = "undebugq uspace", .f = &undebugq },
