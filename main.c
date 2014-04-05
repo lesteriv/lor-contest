@@ -26,6 +26,10 @@
 #include <string.h>
 #include <unistd.h>
 
+/* settings */
+
+int rounds = 500000;
+int passes = 20;
 
 /* rules: https://www.linux.org.ru/forum/development/10349962?cid=10352344 */
 
@@ -69,9 +73,6 @@ struct test {
 	  "BOOT_IMAGE=/debug/vmlinuz-3.2.0-debug-amd64 debug=UUID=42debug5-6ee1-464c-bc41-debug42debuq ro debug", "debug=UUID=42debug5-6ee1-464c-bc41-debug42debug" },
 	{ NULL }
 };
-
-int rounds = 500000;
-int passes = 20;
 
 char *nop(char *, char *);
 char *cutout(char *, char *);
@@ -138,7 +139,7 @@ struct part {
 	{ NULL },
 };
 
-/* strip whitespaces */
+/* collapse whitespaces */
 static char *
 strip(char *p)
 {
@@ -146,19 +147,13 @@ strip(char *p)
 	int inspace = 0;
 
 	d = s = p;
-
-	/* kill leading spases */
 	while (*s && *s == ' ')
 		s++;
-
-	/* kill spaces inbetween */
 	do {
 		if (*s != ' ' || !inspace)
 			*d++ = *s;
 		inspace = *s++ == ' ';
 	} while (*s);
-
-	/* kill trailing spases */
 	do
 		*d = '\0';
 	while (*--d == ' ');
@@ -274,7 +269,7 @@ static void
 result(struct part *p, char *user)
 {
 	struct part *z;
-	double minval = 100000.0;
+	double minval = 1000000.0;
 
 	for (z = p; z->name != NULL; z++)
 		if (strcmp(z->fname, "nop") != 0 && z->grostime < minval) {
