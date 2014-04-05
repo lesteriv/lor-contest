@@ -71,7 +71,7 @@ undebug_wota(char *s)
 		}
 	}
 
-	while( s = strchr( ++s, ' ' ) )
+	while(( s = strchr( ++s, ' ' ) ))
 	{
 		v = *((long*)s);
 		if( ( v & 0x0000FFFFFFFFFFFF ) == 0x677562656420 )
