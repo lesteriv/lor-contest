@@ -12,6 +12,8 @@ Allowed API: http://www.cs.bham.ac.uk/~exr/teaching/lectures/systems/08_09/docs/
 
 Test cases: https://www.linux.org.ru/forum/development/10349962?cid=10352344
 
+Style note: please use indent with provided config
+
 Gros Relults
 ------------
 
