@@ -106,7 +106,7 @@ struct part {
 	{ .name = "anonymous", .fname = "strcut", .f = &strcut_wrapper },
 	{ .name = "anonymous", .fname = "anon_strcut", .f = &anon_strcut},
 	{ .name = "puzan", .fname = "str_drop_str", .f = &str_drop_str },
-	{ .name = "qnikst", .fname = "undebugq (userspace)", .f = &undebugq },
+	{ .name = "qnikst", .fname = "undebugq uspace", .f = &undebugq },
 	{ .name = "qnikst", .fname = "undebugq", .f = &undebugq_ker },
 	{ .name = "mix-mix", .fname = "strcut", .f = &strcutm },
 	{ .name = "Carb", .fname = "debugdel", .f = &carb_wrapper },
