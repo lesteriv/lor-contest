@@ -189,7 +189,7 @@ runtest(struct part *p, struct test *t)
 	int i, k;
 
  	prepare(p, t);
-#if MTRACE
+#if MTRACE || GCOV
 	return;
 #endif
 
@@ -320,9 +320,12 @@ main(int argc, char **argv)
 		}
 	}
 
-	result(part, user);
 #if MTRACE
 	muntrace();
+#endif
+
+#if !GCOV
+	result(part, user);
 #endif
 
 	if (user)
