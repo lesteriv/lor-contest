@@ -248,12 +248,12 @@ result(struct part *p)
 			minval = z->grostime;
 
 	printf("\nGros Relults\n----\n\n");
-	printf("%-16s| %-16s| %-10s| %-12s| %-12s\n",
+	printf("%-16s | %-16s | %-16s | %-12s | %-12s\n",
 	    "name", "func name", "passed", "gros time", "slower");
-	printf("%-16s| %-16s| %-10s| %-12s| %-12s\n",
+	printf("%-16s | %-16s | %-16s | %-12s | %-12s\n",
 	    "---", "---", "---", "---", "---");
 	for (; p->name != NULL; p++)
-		printf("%-16s| %-16s| %-10s|%9.2f ms | %9.2f %% \n",
+		printf("%-16s | %-16s | %-16s | %9.2f ms | %9.2f %% \n",
 		    p->name, p->fname, p->pchart,
 		    p->grostime, 100.0 * (p->grostime - minval) / minval);
 }
