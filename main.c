@@ -111,15 +111,25 @@ static char *
 strip(char *p)
 {
 	char *d, *s;
+	int inspace = 0;
 
 	d = s = p;
-	while (*d && *s) {
-		if (*s == ' ')
-			s++;
-		else
-			*d++ = *s++;
-	}
-	*d = '\0';
+
+	/* kill leading spases */
+	while (*s && *s == ' ')
+		s++;
+
+	/* kill spaces inbetween */
+	do {
+		if (*s != ' ' || !inspace)
+			*d++ = *s;
+		inspace = *s++ == ' ';
+	} while (*s);
+
+	/* kill trailing spases */
+	do
+		*d = '\0';
+	while (*--d == ' ');
 
 	return p;
 }
