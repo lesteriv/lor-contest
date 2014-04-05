@@ -94,7 +94,7 @@ undebug_wota(char *s)
 char *
 undebug_wota_wrapper(char *hay, char *needle)
 {
-	undelete(hay);
+	undebug_wota(hay);
 
 	return hay;
 }
