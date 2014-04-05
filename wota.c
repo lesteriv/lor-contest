@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void 
+static void 
 strremove(char *s, const char *t)
 {
 	size_t l = strlen(t);
@@ -28,7 +28,7 @@ strremove_wrapper(char *hay, char *needle)
 	return hay;
 }
 
-void 
+static void 
 remove_word(char *s, const char *w)
 {
 	int l = strlen(w);
@@ -50,7 +50,7 @@ remove_word_wrapper(char *hay, char *needle)
 	return hay;
 }
 
-void 
+static void 
 undebug_wota(char *s)
 {
 	long v = *((long*)s);

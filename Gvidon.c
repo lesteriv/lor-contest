@@ -6,7 +6,7 @@
 
 #include <string.h>
 
-void 
+static void 
 process(const char *str, const char *substr, char *buffer, size_t bufferSize)
 {
 	char *ptr = buffer;

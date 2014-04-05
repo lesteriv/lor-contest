@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <string.h>
 
-inline uint8_t
+static inline uint8_t
 _strcmp(char *str)
 {
 	return (*(str + 0) == 'd') && (*(str + 1) == 'e')
@@ -13,7 +13,7 @@ _strcmp(char *str)
 	    && (*(str + 4) == 'g');
 }
 
-char *
+static char *
 debugdel(char *str)
 {
 	char *ret = str;

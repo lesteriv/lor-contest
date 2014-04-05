@@ -7,7 +7,7 @@
 #include <string.h>
 #include <assert.h>
 
-char *
+static char *
 strdel(const char *needle, char *haystack)
 {
 	const size_t n_length = strlen(needle);

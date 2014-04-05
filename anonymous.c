@@ -6,7 +6,7 @@
 
 #include <string.h>
 
-void
+static void
 strcut(char *where, const char *what)
 {
 	size_t whatlen = strlen(what);
