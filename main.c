@@ -76,6 +76,7 @@ char *undebugq_ker(char *, char *);
 char *strcutm(char *, char *);
 char *carb_wrapper(char *, char *);
 char *anon_strcut(char *, char *);
+char *undebug_wota_wrapper(char *, char *);
 
 struct part {
 	char *name;
@@ -101,6 +102,7 @@ struct part {
 	{ .name = "true_admin", .fname = "cut2", .f = &cut2 },
 	{ .name = "wota", .fname = "strremove", .f = &strremove_wrapper },
 	{ .name = "wota", .fname = "remove_word", .f = &remove_word_wrapper },
+	{ .name = "wota", .fname = "undebug_wota", .f = &undebug_wota_wrapper },
 	{ .name = "anonymous", .fname = "strcut", .f = &strcut_wrapper },
 	{ .name = "anonymous", .fname = "anon_strcut", .f = &anon_strcut},
 	{ .name = "puzan", .fname = "str_drop_str", .f = &str_drop_str },
