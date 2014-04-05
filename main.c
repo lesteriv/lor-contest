@@ -210,6 +210,7 @@ runtest(struct part *p, struct test *t)
 	char *stat[] = {"fail", "pass"};
 	struct timeval begin, end;
 	int i, k;
+	double time;
 
  	prepare(p, t);
 #if MTRACE || GCOV
@@ -217,20 +218,27 @@ runtest(struct part *p, struct test *t)
 #endif
 
 	fprintf(stderr, "%16s ", p->fname);
-	p->time = 0.0;
+	p->time = 1000000.0;
+
 	for (k = 0; k < passes; k++) {
 		fprintf(stderr, ".");
+
 		gettimeofday(&begin, NULL);
 		for (i = 0; i < rounds; i++)
 			go(p, t->string, t->needle);
 		gettimeofday(&end, NULL);
-		p->time += (end.tv_sec - begin.tv_sec) * 1000.0;
-		p->time += (end.tv_usec - begin.tv_usec) / 1000.0;
+
+		time = (end.tv_sec - begin.tv_sec) * 1000.0;
+		time += (end.tv_usec - begin.tv_usec) / 1000.0;
+
+		/* count min time only */
+		if (time < p->time)
+			p->time = time;
 	}
-	/* average time */
-	p->time /= passes;
+
 	if (t->contest)
 		p->grostime += p->time;
+
 	fprintf(stderr, "%5s%9.2f ms\n", stat[p->pass], p->time);
 }
 
