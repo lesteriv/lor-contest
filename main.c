@@ -258,12 +258,43 @@ result(struct part *p)
 		    p->grostime, 100.0 * (p->grostime - minval) / minval);
 }
 
+void
+usage()
+{
+	extern char *__progname;
+
+	fprintf(stderr, "Usage: %s [-r <rounds>] [-p <passes per round>] [-u <user>]\n", __progname);
+	exit(1);
+}
+
 int
 main(int argc, char **argv)
 {
 	struct part *p;
 	struct test *t;
 	char *contest[] = { "testing", "contest" };
+	char *user = NULL;
+	int ch;
+
+	while ((ch = getopt(argc, argv, "r:p:u:h")) != -1)
+		switch (ch) {
+		case 'r':
+			rounds = atoi(optarg);
+			break;
+		case 'p':
+			passes = atoi(optarg);
+			break;
+		case 'u':
+			user = strdup(optarg);
+			break;
+		case 'h':
+		default:
+			usage();
+			break;
+		}
+
+	argc -= optind;
+	argv += optind;
 
 #if MTRACE
 	mtrace();
@@ -272,14 +303,20 @@ main(int argc, char **argv)
 		t->contest = strlen(t->string) > 40;
 		fprintf(stderr, "\n%-10s%6s \"%s\"\n",
 		    contest[t->contest], "input", t->string);
-		for (p = part; p->name; p++)
+		for (p = part; p->name; p++) {
+			if (user && strcmp(user, p->name) != 0)
+				continue;
 			spawn(p, t);
+		}
 	}
 
 	result(part);
 #if MTRACE
 	muntrace();
 #endif
+
+	if (user)
+		free(user);
 
 	return 0;
 }
