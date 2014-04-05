@@ -58,11 +58,12 @@ static void
 undebug_wota(char *s)
 {
 #if __linux__
-	char *p = s;
-	for (; *p && (p = strchrnul(s, ' ')); s = p + 1) {
-		if (p - s == 5 && (*((int *)s) & 0x000000FFFFFFFFFF) == 0x75626564 && s[4] == 'g')
-			memset(s, ' ', 5);
-	}
+    char *p = s;
+    for (; *p; s = p + 1) {
+        p = strchrnul(s, ' ');
+        if (p - s == 5 && *((int*)s) == 0x75626564 && s[4]=='g')
+            memset(s, ' ', 5);
+    }
 #else
 	long v = *((long *)s);
 	if ((v & 0x000000FFFFFFFFFF) == 0x6775626564) {
