@@ -45,6 +45,8 @@ struct test {
 	  "BOOT_IMAGE=/debug/vmlinuz-3.2.0-debug-amd64 debug=UUID=42debug5-6ee1-464c-bc41-debug42debug ro", "debug" },
 	{ "BOOT_IMAGE=/debug/vmlinuz-3.2.0-debug-amd64 dolvm debug debug=UUID=42debug5-6ee1-464c-bc41-debug42debug debug ro",
 	  "BOOT_IMAGE=/debug/vmlinuz-3.2.0-debug-amd64 dolvm debug=UUID=42debug5-6ee1-464c-bc41-debug42debug ro", "debug" },
+	{ "BOOT_IMAGE=/debug/vmlinuz-3.2.0-debug-amd64 debug dolvm debug debug=UUID=42debug5-6ee1-464c-bc41-debug42debug debug ro",
+	  "BOOT_IMAGE=/debug/vmlinuz-3.2.0-debug-amd64 dolvm debug=UUID=42debug5-6ee1-464c-bc41-debug42debug ro", "debug" },
 	{ NULL }
 };
 
@@ -69,6 +71,7 @@ char *remove_word_wrapper(char *, char *);
 char *strcut_wrapper(char *, char *);
 char *str_drop_str(char *, char *);
 char *undebugq(char *, char *);
+char *undebugq_ker(char *, char *);
 char *strcutm(char *, char *);
 char *carb_wrapper(char *, char *);
 char *anon_strcut(char *, char *);
@@ -100,7 +103,8 @@ struct part {
 	{ .name = "anonymous", .fname = "strcut", .f = &strcut_wrapper },
 	{ .name = "anonymous", .fname = "anon_strcut", .f = &anon_strcut},
 	{ .name = "puzan", .fname = "str_drop_str", .f = &str_drop_str },
-	{ .name = "qnikst", .fname = "undebugq", .f = &undebugq },
+	{ .name = "qnikst", .fname = "undebugq (userspace)", .f = &undebugq },
+	{ .name = "qnikst", .fname = "undebugq", .f = &undebugq_ker },
 	{ .name = "mix-mix", .fname = "strcut", .f = &strcutm },
 	{ .name = "Carb", .fname = "debugdel", .f = &carb_wrapper },
 	{ NULL },
