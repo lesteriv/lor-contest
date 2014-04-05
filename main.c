@@ -33,14 +33,15 @@ struct test {
 	char *string;
 	char *target;
 	char *needle;
+	int contest;
 } testcases[] = {
 	{ "debug", "", "debug" },
+	{ "debu", "debu", "debug" },
 	{ "debugfs", "debugfs", "debug" },
 	{ "debug=1", "debug=1", "debug" },
 	{ "systemd.debug", "systemd.debug", "debug" },
 	{ "debug 123 debug 456", "123 456", "debug" },
 	{ "debug debugfs debug debug=1 systemd.debug debug", "debugfs debug=1 systemd.debug", "debug" },
-	{ "debu", "debu", "debug" },
 	{ "BOOT_IMAGE=/debug/vmlinuz-3.2.0-debug-amd64 debug=UUID=42debug5-6ee1-464c-bc41-debug42debug ro debug",
 	  "BOOT_IMAGE=/debug/vmlinuz-3.2.0-debug-amd64 debug=UUID=42debug5-6ee1-464c-bc41-debug42debug ro", "debug" },
 	{ "BOOT_IMAGE=/debug/vmlinuz-3.2.0-debug-amd64 dolvm debug debug=UUID=42debug5-6ee1-464c-bc41-debug42debug debug ro",
@@ -201,7 +202,8 @@ runtest(struct part *p, struct test *t)
 	}
 	/* average time */
 	p->time /= passes;
-	p->grostime += p->time;
+	if (t->contest)
+		p->grostime += p->time;
 	fprintf(stderr, "%5s%9.2f ms\n", stat[p->pass], p->time);
 }
 
@@ -259,12 +261,15 @@ main(int argc, char **argv)
 {
 	struct part *p;
 	struct test *t;
+	char *contest[] = { "testing", "contest" };
 
 #if MTRACE
 	mtrace();
 #endif
 	for (t = testcases; t->string; t++) {
-		fprintf(stderr, "\n%16s \"%s\"\n", "input", t->string);
+		t->contest = strlen(t->string) > 40;
+		fprintf(stderr, "\n%-10s%6s \"%s\"\n",
+		    contest[t->contest], "input", t->string);
 		for (p = part; p->name; p++)
 			spawn(p, t);
 	}
