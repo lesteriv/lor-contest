@@ -128,6 +128,8 @@ wipeout(char *hay, char *needle)
 			} else {
 				if (needle[state] == *s)
 					state++;
+				else if (*s == ' ')
+					state = 0;
 				else
 					state = -1;
 			}
