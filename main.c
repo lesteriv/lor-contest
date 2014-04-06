@@ -144,6 +144,9 @@ struct part {
 	{ NULL },
 };
 
+#define nelem(x) (sizeof(x) / sizeof((x)[0]))
+#define sign(x)  (((x) > 0) - ((x) < 0))
+
 /* collapse whitespaces */
 static char *
 strip(char *p)
@@ -304,8 +307,8 @@ cmp(const void *p, const void *q)
 {
 	struct part *a = (struct part *)p;
 	struct part *b = (struct part *)q;
-	double x = a->grostime - b->grostime;
-	return (x > 0) - (x < 0);
+
+	return sign(a->grostime - b->grostime);
 }
 
 void
@@ -366,7 +369,7 @@ main(int argc, char **argv)
 
 #if !GCOV
 
-	qsort(part, sizeof(part) / sizeof(part[0]) - 1, sizeof(part[0]), &cmp);
+	qsort(part, nelem(part) - 1, sizeof(part[0]), &cmp);
 	result(part, user);
 #endif
 
