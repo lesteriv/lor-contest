@@ -273,16 +273,16 @@ spawn(struct part *p, struct test *t)
 static void
 result(struct part *p, char *user)
 {
-	struct part *z;
+	struct part *pp;
 	double minval = 1000000.0;
 
-	for (z = p; z->name != NULL; z++)
-		if (strcmp(z->fname, "nop") != 0 && z->grostime < minval) {
+	for (pp = p; pp->name != NULL; pp++)
+		if (strcmp(pp->fname, "nop") != 0 && pp->grostime < minval) {
 			if (user) {
-				if (strcmp(user, z->name) == 0)
-					minval = z->grostime;
+				if (strcmp(user, pp->name) == 0)
+					minval = pp->grostime;
 			} else
-				minval = z->grostime;
+				minval = pp->grostime;
 		}
 
 	printf("\nGros Relults\n----\n\n");
@@ -290,13 +290,22 @@ result(struct part *p, char *user)
 	    "name", "func name", "passed", "gros time", "slower");
 	printf("%-16s | %-16s | %-16s | %-12s | %-12s\n",
 	    "---", "---", "---", "---", "---");
-	for (; p->name != NULL; p++) {
-		if (user && strcmp(user, p->name) != 0)
+	for (pp = p; pp->name != NULL; pp++) {
+		if (user && strcmp(user, pp->name) != 0)
 			continue;
 		printf("%-16s | %-16s | %-16s | %9.2f ms | %9.2f %% \n",
-		    p->name, p->fname, p->pchart,
-		    p->grostime, 100.0 * (p->grostime - minval) / minval);
+		    pp->name, pp->fname, pp->pchart,
+		    pp->grostime, 100.0 * (pp->grostime - minval) / minval);
 	}
+}
+
+int
+cmp(const void *p, const void *q)
+{
+	struct part *a = (struct part *)p;
+	struct part *b = (struct part *)q;
+	double x = a->grostime - b->grostime;
+	return (x > 0) - (x < 0);
 }
 
 void
@@ -356,6 +365,8 @@ main(int argc, char **argv)
 #endif
 
 #if !GCOV
+
+	qsort(part, sizeof(part) / sizeof(part[0]) - 1, sizeof(part[0]), &cmp);
 	result(part, user);
 #endif
 
