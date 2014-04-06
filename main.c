@@ -161,11 +161,13 @@ strip(char *p)
 	d = s = p;
 	while (*s && *s == ' ')
 		s++;
+
 	do {
 		if (*s != ' ' || !inspace)
 			*d++ = *s;
 		inspace = *s++ == ' ';
 	} while (*s);
+
 	do
 		*d = '\0';
 	while (*--d == ' ');

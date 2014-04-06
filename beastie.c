@@ -140,11 +140,13 @@ wipeout(char *hay, char *needle)
 	p = s = hay;
 	while (*s && *s == ' ')
 		s++;
+
 	do {
 		if (*s != ' ' || !inspace)
 			*p++ = *s;
 		inspace = *s++ == ' ';
 	} while (*s);
+
 	do
 		*p = '\0';
 	while (*--p == ' ');
