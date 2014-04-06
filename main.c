@@ -377,7 +377,7 @@ main(int argc, char **argv)
 	for (t = testcases; t->string; t++) {
 		t->contest = strlen(t->string) > 40;
 		fprintf(stderr, "\n%-10s%6s \"%s\"\n",
-		    contest[t->contest], "haystack", t->string);
+		    contest[t->contest], "input", t->string);
 		fprintf(stderr, "%-10s%6s \"%s\"\n",
 		    "", "needle", t->needle);
 		fprintf(stderr, "%-10s%6s \"%s\"\n",
