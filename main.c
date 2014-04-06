@@ -199,7 +199,7 @@ prepare(struct part *p, struct test *test)
 	/* remove whitespaces from output for compare */
 	p->pass = !strcmp(strip(o), strip(t));
 	p->passed += p->pass;
-	strncat(p->pchart, p->pass ? "*" : " ", 1);
+	strlcat(p->pchart, p->pass ? "*" : " ", sizeof(p->pchart));
 
 	if (o != s)
 		free(o);
@@ -278,6 +278,7 @@ result(struct part *p, char *user)
 {
 	struct part *pp;
 	double minval = 1000000.0;
+	int plen = strlen(p->pchart);
 
 	for (pp = p; pp->name != NULL; pp++)
 		if (strcmp(pp->fname, "nop") != 0 && pp->grostime < minval) {
@@ -289,16 +290,17 @@ result(struct part *p, char *user)
 		}
 
 	printf("\nGros Relults\n----\n\n");
-	printf("%-16s | %-16s | %-16s | %-12s | %-12s\n",
-	    "name", "func name", "passed", "gros time", "slower");
-	printf("%-16s | %-16s | %-16s | %-12s | %-12s\n",
-	    "---", "---", "---", "---", "---");
+	printf("%-16s | %-16s | %-*s | %-12s | %-12s\n",
+	    "name", "func name", plen, "passed", "gros time", "slower");
+	printf("%-16s | %-16s | %-*s | %-12s | %-12s\n",
+	    "---", "---", plen, "---", "---", "---");
+
 	for (pp = p; pp->name != NULL; pp++) {
 		if (user && strcmp(user, pp->name) != 0)
 			continue;
-		printf("%-16s | %-16s | %-16s | %9.2f ms | %9.2f %% \n",
-		    pp->name, pp->fname, pp->pchart,
-		    pp->grostime, 100.0 * (pp->grostime - minval) / minval);
+		printf("%-16s | %-16s | %-*s | %9.2f ms | %9.2f %% \n",
+		    pp->name, pp->fname, plen, pp->pchart,
+		    pp->grostime, 100.0 * (p->grostime - minval) / minval);
 	}
 }
 
@@ -368,7 +370,6 @@ main(int argc, char **argv)
 #endif
 
 #if !GCOV
-
 	qsort(part, nelem(part) - 1, sizeof(part[0]), &cmp);
 	result(part, user);
 #endif
