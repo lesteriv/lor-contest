@@ -280,14 +280,16 @@ result(struct part *p, char *user)
 	double minval = 1000000.0;
 	int plen = strlen(p->pchart);
 
-	for (pp = p; pp->name != NULL; pp++)
-		if (strcmp(pp->fname, "nop") != 0 && pp->grostime < minval) {
-			if (user) {
-				if (strcmp(user, pp->name) == 0)
-					minval = pp->grostime;
-			} else
-				minval = pp->grostime;
-		}
+	for (pp = p; pp->name != NULL; pp++) {
+		if (strcmp(pp->fname, "nop") == 0)
+			continue;
+		if (user && strcmp(user, pp->name) != 0)
+			continue;
+		if (pp->grostime < minval)
+			minval = pp->grostime;
+		if (plen == 0)
+			plen = strlen(pp->pchart);
+	}
 
 	printf("\nGros Relults\n----\n\n");
 	printf("%-16s | %-16s | %-*s | %-12s | %-12s\n",
@@ -300,7 +302,7 @@ result(struct part *p, char *user)
 			continue;
 		printf("%-16s | %-16s | %-*s | %9.2f ms | %9.2f %% \n",
 		    pp->name, pp->fname, plen, pp->pchart,
-		    pp->grostime, 100.0 * (p->grostime - minval) / minval);
+		    pp->grostime, 100.0 * (pp->grostime - minval) / minval);
 	}
 }
 
