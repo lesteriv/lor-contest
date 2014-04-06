@@ -112,7 +112,7 @@ struct part {
 	double time;
 	double grostime;
 	int passed;
-	char pchart[16];
+	char pchart[32];
 } part[] = {
 	{ .name = "nop", .fname = "nop", .f = &nop },
 	{ .name = "beastie", .fname = "cutout", .f = &cutout },
