@@ -146,6 +146,10 @@ struct part {
 
 #define nelem(x) (sizeof(x) / sizeof((x)[0]))
 #define sign(x)  (((x) > 0) - ((x) < 0))
+#if __linux__
+#define strlcpy(d,s,l) (strncpy(d,s,l), (d)[(l) - 1] = '\0')
+#define strlcat(d,s,l) strncat(d,s,(l) - strlen(d) - 1)
+#endif
 
 /* collapse whitespaces */
 static char *
