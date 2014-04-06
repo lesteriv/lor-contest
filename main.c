@@ -289,8 +289,6 @@ result(struct part *p, char *user)
 	int place = 0;
 
 	for (pp = p; pp->name != NULL; pp++) {
-		if (strcmp(pp->fname, "nop") == 0)
-			continue;
 		if (user && strcmp(user, pp->name) != 0)
 			continue;
 		if (pp->passed != ntests)
