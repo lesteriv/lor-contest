@@ -305,27 +305,17 @@ result(struct part *p, char *user)
 	printf("%5s | %-16s | %-16s | %-*s | %-12s | %-12s\n",
 	    "---", "---", "---", plen, "---", "---", "---");
 
-	/* show passed first */
-	for (pp = p; pp->name != NULL; pp++) {
-		if (pp->passed != ntests)
-			continue;
-		if (user && strcmp(user, pp->name) != 0)
-			continue;
-		printf("%5d | %-16s | %-16s | %-*s | %9.2f ms | %9.2f %% \n",
-		    ++place, pp->name, pp->fname, plen, pp->pchart,
-		    pp->grostime, 100.0 * (pp->grostime - minval) / minval);
-	}
-
-	/* show disqualified last */
-	for (pp = p; pp->name != NULL; pp++) {
-		if (pp->passed == ntests)
-			continue;
-		if (user && strcmp(user, pp->name) != 0)
-			continue;
-		printf("%5d | %-16s | %-16s | %-*s | %9.2f ms | %9.2f %% \n",
-		    ++place, pp->name, pp->fname, plen, pp->pchart,
-		    pp->grostime, 100.0 * (pp->grostime - minval) / minval);
-	}
+	do {
+		for (pp = p; pp->name != NULL; pp++) {
+			if (pp->passed != ntests)
+				continue;
+			if (user && strcmp(user, pp->name) != 0)
+				continue;
+			printf("%5d | %-16s | %-16s | %-*s | %9.2f ms | %9.2f %% \n",
+			    ++place, pp->name, pp->fname, plen, pp->pchart,
+			    pp->grostime, 100.0 * (pp->grostime - minval) / minval);
+		}
+	} while (ntests--);
 }
 
 int
